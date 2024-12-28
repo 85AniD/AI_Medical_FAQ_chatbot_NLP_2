@@ -1,0 +1,484 @@
+{
+    "responses": [
+        {
+            "name": "default",
+            "response": "I'm not sure I understand your question. Can you please rephrase?"
+        },
+        {
+            "name": "greeting",
+            "response": "Hello! How can I assist you today?"
+        },
+        {
+            "name": "symptoms",
+            "response": "Sorry to hear that. Can you tell me more about your symptoms?"
+        },
+        {
+            "name": "medication",
+            "response": "I'm not a doctor, but I can provide general information about medications. Can you tell me more about your condition?"
+        },
+        {
+            "name": "greeting",
+            "response": "Hello, thanks for visiting."
+        },
+        {
+            "name": "goodbye",
+            "response": "See you later, thanks for stopping by."
+        },
+        {
+            "name": "thanks",
+            "response": "Happy to help!"
+        },
+        {
+            "name": "hours",
+            "response": "We are open daily from 9am to 9pm."
+        },
+        {
+            "name": "location",
+            "response": "We are located in Guwahati, Khanapara."
+        },
+        {
+            "name": "age",
+            "response": "My owner Aniruddha Das is 38 years old."
+        },
+        {
+            "name": "name",
+            "response": "You can call me AniD."
+        },
+        {
+            "name": "funny",
+            "response": "Why did the hipster burn his mouth? \n He drank the coffee before it was cool."
+        },
+        {
+            "name": "query1",
+            "response": "Signs of a heart attack include chest pain, shortness of breath, nausea, and lightheadedness. Call emergency services immediately."
+        },
+        {
+            "name": "query2",
+            "response": "If someone is choking, encourage them to cough and perform abdominal thrusts (Heimlich maneuver). Call emergency services if the obstruction doesn't clear."
+        },
+        {
+            "name": "query3",
+            "response": "Signs of a stroke include face drooping, arm weakness, and speech difficulty. Act FAST: Face drooping, Arm weakness, Speech difficulty, Time to call emergency services."
+        },
+        {
+            "name": "query4",
+            "response": "If someone has a severe burn, cool the burn with cool water, cover with a clean cloth, and seek medical attention immediately."
+        },
+        {
+            "name": "query5",
+            "response": "Signs of anaphylaxis include hives, swelling, and difficulty breathing. Administer epinephrine (if available) and call emergency services immediately."
+        },
+        {
+            "name": "query6",
+            "response": "If someone has a suspected broken bone, immobilize the injury, apply a cold compress, and seek medical attention immediately."
+        },
+        {
+            "name": "query7",
+            "response": "To treat a plantar wart, use over-the-counter treatments, keep the area clean, and avoid sharing personal items. Consult a doctor for persistent warts."
+        },
+        {
+            "name": "query8",
+            "response": "If someone has a deep cut, apply pressure to stop bleeding, clean the wound, and seek medical attention for stitches or further treatment."
+        },
+        {
+            "name": "query9",
+            "response": "Signs of heatstroke include high body temperature, rapid pulse, and confusion. Cool the person down and seek medical attention immediately."
+        },
+        {
+            "name": "query10",
+            "response": "If someone has frostbite, gently warm the affected area and seek medical attention for further treatment."
+        },
+        {
+            "name": "query11",
+            "response": "Signs of poisoning include nausea, vomiting, and confusion. Call poison control and seek emergency medical attention immediately."
+        },
+        {
+            "name": "query12",
+            "response": "If someone has an electric shock, turn off the power source (if safe), and call emergency services immediately."
+        },
+        {
+            "name": "query13",
+            "response": "Signs of hypothermia include shivering, confusion, and slowed heart rate. Warm the person slowly and seek medical attention immediately."
+        },
+        {
+            "name": "query14",
+            "response": "If someone has a bee sting, remove the stinger if visible, wash the area, and apply a cold compress. Seek medical attention if symptoms worsen or if there's an allergic reaction. Use antihistamines for swelling."
+        },
+        {
+            "name": "query15",
+            "response": "A heart attack occurs when blood flow to the heart is blocked, while cardiac arrest is when the heart suddenly stops beating. Both are medical emergencies requiring immediate attention."
+        },
+        {
+            "name": "query16",
+            "response": "Heat exhaustion is a milder form of heat-related illness, while heatstroke is a severe and life-threatening condition. Both require cooling and hydration, but heatstroke needs immediate medical attention."
+        },
+        {
+            "name": "query17",
+            "response": "If someone has a snake bite, keep the person calm, immobilize the bitten area, and seek medical attention immediately."
+        },
+        {
+            "name": "query18",
+            "response": "Signs of a pulmonary embolism include shortness of breath, chest pain, and coughing up blood. Seek emergency medical attention immediately."
+        },
+        {
+            "name": "query19",
+            "response": "If someone has a nosebleed, have them sit upright, lean forward, and pinch the nostrils together. Apply ice and seek medical attention if bleeding doesn't stop."
+        },
+        {
+            "name": "query20",
+            "response": "Signs of a diabetic emergency include high or low blood sugar levels, confusion, and dizziness. If conscious, give sugar or glucose and seek medical attention."
+        },
+        {
+            "name": "query21",
+            "response": "If someone has a sprain, rest the injured area, apply ice, and elevate the limb. Seek medical attention if pain and swelling persist."
+        },
+        {
+            "name": "query22",
+            "response": "Signs of a severe allergic reaction include difficulty breathing, swelling, and a rapid pulse. Administer epinephrine (if available) and call emergency services immediately."
+        },
+        {
+            "name": "query23",
+            "response": "If someone has a heat rash, keep the affected area dry and cool. Avoid tight clothing and use calamine lotion for relief."
+        },
+        {
+            "name": "query24",
+            "response": "Signs of a seizure include uncontrollable shaking, confusion, and loss of consciousness. Protect the person from injury and call emergency services if it lasts more than five minutes."
+        },
+        {
+            "name": "query25",
+            "response": "If someone has an eye injury, do not rub the eye, gently rinse with water, and cover with a protective shield. Seek medical attention immediately."
+        },
+        {
+            "name": "query26",
+            "response": "High cholesterol can be caused by an unhealthy diet, lack of exercise, smoking, and genetics."
+        },
+        {
+            "name": "query27",
+            "response": "If someone has a concussion, have them rest and avoid physical activity. Seek medical attention for diagnosis and treatment."
+        },
+        {
+            "name": "query28",
+            "response": "Signs of a spider bite include pain, swelling, and redness around the bite. Clean the area and apply a cold compress."
+        },
+        {
+            "name": "query29",
+            "response": "To prevent osteoporosis, consume a diet rich in calcium and vitamin D, engage in regular weight-bearing exercise, avoid smoking, and limit alcohol consumption. Consult your healthcare provider for personalized advice."
+        },
+        {
+            "name": "query30",
+            "response": "To treat acid reflux, avoid trigger foods, eat smaller meals, elevate the head of your bed, avoid lying down after eating, and use over-the-counter medications. Consult your healthcare provider if symptoms persist."
+        },
+        {
+            "name": "query31",
+            "response": "Symptoms of anemia include fatigue, weakness, pale skin, shortness of breath, and dizziness. Consult a doctor for proper diagnosis."
+        },
+        {
+            "name": "query32",
+            "response": "To treat bronchitis, rest, stay hydrated, and use over-the-counter cough medicines. Seek medical help if symptoms persist."
+        },
+        {
+            "name": "query33",
+            "response": "Symptoms of diabetes include frequent urination, excessive thirst, extreme hunger, weight loss, and fatigue. See a doctor for testing."
+        },
+        {
+            "name": "query34",
+            "response": "To relieve a migraine, rest in a dark, quiet room, apply a cold compress to your head, and take prescribed migraine medications."
+        },
+        {
+            "name": "query35",
+            "response": "To treat a pinched nerve, rest, apply ice or heat, and take over-the-counter pain relievers. Consult a doctor if pain persists."
+        },
+        {
+            "name": "query36",
+            "response": "To treat strep throat, take prescribed antibiotics, rest, and stay hydrated. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query37",
+            "response": "Symptoms of asthma include wheezing, shortness of breath, chest tightness, and coughing. Consult a doctor for proper management."
+        },
+        {
+            "name": "query38",
+            "response": "To treat dehydration, drink plenty of water, consume oral rehydration solutions, and avoid caffeine and alcohol. Seek medical help if severe."
+        },
+        {
+            "name": "query39",
+            "response": "Symptoms of appendicitis include sharp abdominal pain, fever, nausea, and loss of appetite. Seek immediate medical attention."
+        },
+        {
+            "name": "query40",
+            "response": "To treat a cold, rest, drink fluids, use over-the-counter cold medications, and stay warm. Consult a doctor if symptoms persist."
+        },
+        {
+            "name": "query41",
+            "response": "Symptoms of a UTI include frequent urination, burning sensation, cloudy urine, and lower abdominal pain. See a doctor for antibiotics."
+        },
+        {
+            "name": "query42",
+            "response": "To treat insomnia, establish a regular sleep routine, avoid caffeine and screens before bed, and consider relaxation techniques. Consult a doctor for severe cases."
+        },
+        {
+            "name": "query43",
+            "response": "Symptoms of allergies include sneezing, itchy eyes, runny nose, and skin rashes. Avoid allergens and use antihistamines for relief."
+        },
+        {
+            "name": "query44",
+            "response": "To treat diarrhea, stay hydrated, consume bland foods, and avoid dairy and fatty foods. Seek medical help if it persists."
+        },
+        {
+            "name": "query45",
+            "response": "Symptoms of the flu include fever, chills, muscle aches, cough, and fatigue. Rest, stay hydrated, and take over-the-counter medications."
+        },
+        {
+            "name": "query46",
+            "response": "To treat a headache, rest in a quiet, dark room, apply a cold or warm compress, and take over-the-counter pain relievers."
+        },
+        {
+            "name": "query47",
+            "response": "Symptoms of hypertension include headaches, dizziness, and nosebleeds. Regular monitoring and a healthy lifestyle are crucial."
+        },
+        {
+            "name": "query48",
+            "response": "To treat rosacea, avoid triggers, use gentle skincare products, and apply prescribed medications. Consult a dermatologist for proper management."
+        },
+        {
+            "name": "query49",
+            "response": "Symptoms of COVID-19 include fever, cough, shortness of breath, fatigue, and loss of taste or smell. Isolate and seek medical advice."
+        },
+        {
+            "name": "query50",
+            "response": "To treat indigestion, avoid fatty foods, eat smaller meals, stay upright after eating, and use antacids. Consult a doctor if persistent."
+        },
+        {
+            "name": "query51",
+            "response": "To treat a blister, clean it with soap and water, cover with a bandage, and avoid popping it. Seek medical help if it becomes infected."
+        },
+        {
+            "name": "query52",
+            "response": "Symptoms of anxiety include excessive worry, restlessness, fatigue, and difficulty concentrating. Consider therapy and relaxation techniques."
+        },
+        {
+            "name": "query53",
+            "response": "To treat a cold sore, apply antiviral creams, keep the area clean, and avoid touching the sore. Consult a doctor for prescription medications."
+        },
+        {
+            "name": "query54",
+            "response": "Symptoms of depression include persistent sadness, loss of interest in activities, changes in appetite, and fatigue. Seek professional help."
+        },
+        {
+            "name": "query55",
+            "response": "To treat a rash, avoid irritants, apply soothing lotions, and keep the area clean and dry. Seek medical advice if it persists."
+        },
+        {
+            "name": "query56",
+            "response": "Symptoms of an ear infection include ear pain, fluid drainage, hearing loss, and fever. Consult a doctor for proper diagnosis and treatment."
+        },
+        {
+            "name": "query57",
+            "response": "To treat food poisoning, rest, stay hydrated, and eat bland foods. Seek medical help if symptoms are severe or persist."
+        },
+        {
+            "name": "query58",
+            "response": "Symptoms of meningitis include severe headache, fever, stiff neck, and sensitivity to light. Seek emergency medical help immediately."
+        },
+        {
+            "name": "query59",
+            "response": "To treat motion sickness, sit in a stable position, focus on the horizon, and use over-the-counter medications like dimenhydrinate."
+        },
+        {
+            "name": "query60",
+            "response": "Symptoms of pneumonia include chest pain, cough, fever, and difficulty breathing. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query61",
+            "response": "To treat ringworm, apply antifungal creams, keep the area clean and dry, and avoid sharing personal items. Consult a doctor if it persists."
+        },
+        {
+            "name": "query62",
+            "response": "Symptoms of a panic attack include rapid heartbeat, sweating, trembling, and a feeling of impending doom. Seek professional help."
+        },
+        {
+            "name": "query63",
+            "response": "To treat scabies, apply prescription creams, wash bedding and clothing in hot water, and avoid close contact with others. Consult a doctor."
+        },
+        {
+            "name": "query64",
+            "response": "Symptoms of measles include fever, cough, runny nose, and a red rash. Seek medical attention and ensure vaccination."
+        },
+        {
+            "name": "query65",
+            "response": "To treat sunburn, apply aloe vera gel, take cool baths, and stay hydrated. Avoid further sun exposure and seek medical help if severe."
+        },
+        {
+            "name": "query66",
+            "response": "Symptoms of chickenpox include itchy rash, fever, and tiredness. Consult a doctor for proper treatment and avoid scratching."
+        },
+        {
+            "name": "query67",
+            "response": "To treat a sinus infection, use saline nasal sprays, stay hydrated, and take over-the-counter pain relievers. Consult a doctor if it persists."
+        },
+        {
+            "name": "query68",
+            "response": "Symptoms of the common cold include runny nose, sore throat, cough, and congestion. Rest, stay hydrated, and use over-the-counter remedies."
+        },
+        {
+            "name": "query69",
+            "response": "To treat an ingrown toenail, soak your foot in warm water, keep the area clean, and wear comfortable shoes. Consult a doctor if it becomes infected."
+        },
+        {
+            "name": "query70",
+            "response": "Symptoms of RSV include coughing, wheezing, and difficulty breathing. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query71",
+            "response": "To treat a toothache, rinse with warm salt water, take over-the-counter pain relievers, and avoid extreme temperatures. See a dentist if pain persists."
+        },
+        {
+            "name": "query72",
+            "response": "Symptoms of jaundice include yellowing of the skin and eyes, dark urine, and pale stools. Consult a doctor for proper diagnosis and treatment."
+        },
+        {
+            "name": "query73",
+            "response": "To treat a yeast infection, use over-the-counter antifungal creams or consult a doctor for prescription medications."
+        },
+        {
+            "name": "query74",
+            "response": "Symptoms of Lyme disease include a bull's-eye rash, fever, chills, and muscle aches. Seek medical help if you suspect Lyme disease."
+        },
+        {
+            "name": "query75",
+            "response": "Symptoms of a kidney stone include severe pain in the back or side, nausea, and blood in the urine. Seek medical help immediately."
+        },
+        {
+            "name": "query76",
+            "response": "To lower high blood pressure, reduce salt intake, maintain a healthy diet, exercise regularly, avoid smoking, and limit alcohol consumption. Consult your healthcare provider for personalized advice."
+        },
+        {
+            "name": "query77",
+            "response": "For a sprained wrist, rest, apply ice, compress with an elastic bandage, and elevate the wrist. Consult a doctor if pain persists."
+        },
+        {
+            "name": "query78",
+            "response": "Symptoms of gastroenteritis include diarrhea, vomiting, stomach cramps, and fever. Stay hydrated and seek medical help if symptoms are severe."
+        },
+        {
+            "name": "query79",
+            "response": "Symptoms of hepatitis B include jaundice, fatigue, abdominal pain, and dark urine. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query80",
+            "response": "To treat a black eye, apply a cold compress, rest, and avoid further injury to the area. Seek medical help if there are vision changes or severe pain."
+        },
+        {
+            "name": "query81",
+            "response": "Symptoms of gout include sudden, severe joint pain, redness, and swelling. Consult a doctor for proper diagnosis and treatment."
+        },
+        {
+            "name": "query82",
+            "response": "To treat pink eye, keep the eye clean, avoid touching it, and use prescribed eye drops. Consult a doctor for proper diagnosis and treatment."
+        },
+        {
+            "name": "query83",
+            "response": "Symptoms of mononucleosis include fever, sore throat, swollen lymph nodes, and fatigue. Rest and stay hydrated. Seek medical advice."
+        },
+        {
+            "name": "query84",
+            "response": "To treat a stomach ache, rest, drink clear fluids, and avoid solid food for a few hours. Consult a doctor if pain persists or is severe."
+        },
+        {
+            "name": "query85",
+            "response": "To treat a swollen ankle, rest, apply ice, compress with an elastic bandage, and elevate the foot. Consult a doctor if swelling persists."
+        },
+        {
+            "name": "query86",
+            "response": "Symptoms of hyperthyroidism include rapid heartbeat, weight loss, nervousness, and sweating. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query87",
+            "response": "To treat lice, use over-the-counter or prescription shampoos, comb out the nits, and wash clothing and bedding in hot water."
+        },
+        {
+            "name": "query88",
+            "response": "Symptoms of hypothyroidism include fatigue, weight gain, cold intolerance, and dry skin. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query89",
+            "response": "Symptoms of an ectopic pregnancy include sharp abdominal pain, dizziness, and abnormal bleeding. Seek emergency medical help immediately."
+        },
+        {
+            "name": "query90",
+            "response": "Symptoms of MRSA include red, swollen, and painful skin infections. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query91",
+            "response": "To treat a sore throat, drink warm liquids, use throat lozenges, and take over-the-counter pain relievers. Seek medical help if it persists."
+        },
+        {
+            "name": "query92",
+            "response": "Symptoms of tuberculosis include a persistent cough, weight loss, night sweats, and fever. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query93",
+            "response": "To treat eczema, use moisturizers, avoid triggers, and apply prescription creams. Consult a doctor for severe cases."
+        },
+        {
+            "name": "query94",
+            "response": "Symptoms of lupus include fatigue, joint pain, skin rashes, and fever. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query95",
+            "response": "To treat sciatica, apply heat or cold packs, take over-the-counter pain relievers, and do gentle stretching exercises. Consult a doctor if pain persists."
+        },
+        {
+            "name": "query96",
+            "response": "Symptoms of GERD include heartburn, regurgitation, and chest pain. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query97",
+            "response": "Symptoms of bipolar disorder include mood swings, periods of depression, and episodes of mania. Seek professional help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query98",
+            "response": "To treat hemorrhoids, use over-the-counter creams, take warm baths, and avoid straining during bowel movements. Consult a doctor if symptoms persist."
+        },
+        {
+            "name": "query99",
+            "response": "Symptoms of ADHD include inattention, hyperactivity, and impulsiveness. Seek professional help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query100",
+            "response": "To treat psoriasis, use moisturizers, apply prescription creams, and avoid triggers. Consult a doctor for proper management."
+        },
+        {
+            "name": "query101",
+            "response": "To treat acne, use over-the-counter products, keep the skin clean, and avoid picking at pimples. Consult a dermatologist for severe cases."
+        },
+        {
+            "name": "query102",
+            "response": "Symptoms of Celiac disease include diarrhea, weight loss, and bloating. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query103",
+            "response": "Symptoms of a urinary tract infection include burning during urination, frequent urination, and cloudy urine. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query104",
+            "response": "Symptoms of Parkinson's disease include tremors, stiffness, slow movement, and balance problems. Seek medical help for proper diagnosis and treatment."
+        },
+        {
+            "name": "query105",
+            "response": "To treat athlete's foot, use antifungal creams, keep the feet dry, and avoid sharing personal items. Consult a doctor if it persists."
+        },
+        {
+            "name": "query106",
+            "response": "Symptoms of a blood clot include swelling, pain, and redness. Seek medical help immediately for proper diagnosis and treatment."
+        },
+        {
+            "name": "query107",
+            "response": "To treat an ulcer, avoid spicy foods, take prescribed medications, and manage stress. Consult a doctor for proper diagnosis and treatment."
+        },
+        {
+            "name": "query108",
+            "response": "To treat a pulled muscle, rest, apply ice, and use over-the-counter pain relievers. Consult a doctor if pain persists."
+        }
+    ]
+}
