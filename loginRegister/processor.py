@@ -11,10 +11,10 @@ nltk.download('punkt')
 lemmatizer = WordNetLemmatizer()
 
 # Load required files
-intents = json.load(open('intents.json', encoding='utf-8'))
-words = pickle.load(open('words.pkl', 'rb'))
-classes = pickle.load(open('classes.pkl', 'rb'))
-model = load_model('chatbot_model.h5')
+intents = json.load(open('data/intents.json', encoding='utf-8'))
+words = pickle.load(open('data/words.pkl', 'rb'))
+classes = pickle.load(open('data/classes.pkl', 'rb'))
+model = load_model('data/chatbot_model.h5')
 
 def clean_up_sentence(sentence):
     """Tokenizes and lemmatizes a sentence."""

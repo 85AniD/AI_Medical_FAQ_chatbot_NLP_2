@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from loginRegister.processor import chatbot_response, register
+from processor import chatbot_response, register
 from db.database import fetch_query, execute_query
 
 app = Flask(__name__)

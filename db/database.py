@@ -1,4 +1,5 @@
-from db_config import create_connection
+from db.db_config import create_connection
+from .db_config import create_connection
 
 def execute_query(query, params=None):
     """Execute a query on the MySQL database."""
