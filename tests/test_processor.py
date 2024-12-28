@@ -1,5 +1,12 @@
+import sys
+import os
 import unittest
+
+# Add the root directory to sys.path to allow imports from 'loginRegister'
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from loginRegister.processor import predict_class, get_response
+
 
 class TestProcessor(unittest.TestCase):
     def test_predict_class(self):

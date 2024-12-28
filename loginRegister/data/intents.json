@@ -1,0 +1,1300 @@
+{
+    "intents": [
+        {
+            "name": "greeting",
+            "patterns": [
+                "Is anyone there?",
+                "Hello",
+                "Hi there",
+                "How are you?",
+                "Good day"
+            ],
+            "responses": [
+                "Hello, thanks for visiting.",
+                "Good to see you again!",
+                "Hi there, how can I assist you today?"
+            ]
+        },
+        {
+            "name": "goodbye",
+            "patterns": [
+                "Goodbye",
+                "Bye",
+                "See you later"
+            ],
+            "responses": [
+                "See you later, thanks for stopping by.",
+                "Have a great day!",
+                "Bye! Looking forward to your next visit."
+            ]
+        },
+        {
+            "name": "thanks",
+            "patterns": [
+                "Thanks",
+                "Thank you!",
+                "I appreciate it",
+                "That's helpful"
+            ],
+            "responses": [
+                "Happy to help!",
+                "Anytime!",
+                "You're welcome!"
+            ]
+        },
+        {
+            "name": "hours",
+            "patterns": [
+                "What hours are you open?",
+                "What are your hours?",
+                "When are you open?"
+            ],
+            "responses": [
+                "We are open daily from 9am to 9pm.",
+                "Our hours are from 9am to 9pm every day."
+            ]
+        },
+        {
+            "name": "location",
+            "patterns": [
+                "What is your location?",
+                "Where are you located?",
+                "What is your address?"
+            ],
+            "responses": [
+                "We are located in Guwahati, Khanapara.",
+                "Our address is Guwahati, Khanapara."
+            ]
+        },
+        {
+            "name": "age",
+            "patterns": [
+                "How old are you?",
+                "What is your age?",
+                "Age?",
+                "How old is AniD?"
+            ],
+            "responses": [
+                "My owner Aniruddha Das is 38 years old.",
+                "AniD is 38 years old."
+            ]
+        },
+        {
+            "name": "name",
+            "patterns": [
+                "Are you AniD?",
+                "What's your name?",
+                "Who are you?",
+                "What is your name?"
+            ],
+            "responses": [
+                "You can call me AniD.",
+                "Yes, my name is AniD.",
+                "I'm AniD, the assistant of Aniruddha Das."
+            ]
+        },
+        {
+            "name": "funny",
+            "patterns": [
+                "fun joke",
+                "Tell me a joke!",
+                "Make me laugh",
+                "Do you know any jokes?"
+            ],
+            "responses": [
+                "Why did the hipster burn his mouth? \n He drank the coffee before it was cool.",
+                "What did the buffalo say when his son left for college? \n Bison.",
+                "You can hear the blood in your veins \n if you listen varicosely.",
+                "Did you hear about the guy whose whole left side was cut off? \n He's all right now."
+            ]
+        },
+        {
+            "name": "query1",
+            "patterns": [
+                "Heart attack symptoms?",
+                "Signs of heart attack?",
+                "What are the signs of a heart attack?"
+            ],
+            "responses": [
+                "Signs of a heart attack include chest pain, shortness of breath, nausea, and lightheadedness. Call emergency services immediately."
+            ]
+        },
+        {
+            "name": "query2",
+            "patterns": [
+                "Choking first aid?",
+                "What should I do if someone is choking?",
+                "Help for choking?"
+            ],
+            "responses": [
+                "If someone is choking, encourage them to cough and perform abdominal thrusts (Heimlich maneuver). Call emergency services if the obstruction doesn't clear."
+            ]
+        },
+        {
+            "name": "query3",
+            "patterns": [
+                "What are the signs of a stroke?",
+                "Signs of stroke?",
+                "Stroke symptoms?"
+            ],
+            "responses": [
+                "Signs of a stroke include face drooping, arm weakness, and speech difficulty. Act FAST: Face drooping, Arm weakness, Speech difficulty, Time to call emergency services."
+            ]
+        },
+        {
+            "name": "query4",
+            "patterns": [
+                "Help for severe burn?",
+                "What should I do if someone has a severe burn?",
+                "Severe burn first aid?"
+            ],
+            "responses": [
+                "If someone has a severe burn, cool the burn with cool water, cover with a clean cloth, and seek medical attention immediately."
+            ]
+        },
+        {
+            "name": "query5",
+            "patterns": [
+                "Signs of anaphylaxis?",
+                "What are the signs of anaphylaxis?",
+                "Anaphylaxis symptoms?"
+            ],
+            "responses": [
+                "Signs of anaphylaxis include hives, swelling, and difficulty breathing. Administer epinephrine (if available) and call emergency services immediately."
+            ]
+        },
+        {
+            "name": "query6",
+            "patterns": [
+                "Help for broken bone?",
+                "What should I do if someone has a broken bone?",
+                "Broken bone first aid?"
+            ],
+            "responses": [
+                "If someone has a suspected broken bone, immobilize the injury, apply a cold compress, and seek medical attention immediately."
+            ]
+        },
+        {
+            "name": "query7",
+            "patterns": [
+                "How to treat a plantar wart?",
+                "Plantar wart treatment?",
+                "What to do for a plantar wart?"
+            ],
+            "responses": [
+                "To treat a plantar wart, use over-the-counter treatments, keep the area clean, and avoid sharing personal items. Consult a doctor for persistent warts."
+            ]
+        },
+        {
+            "name": "query8",
+            "patterns": [
+                "What should I do if someone has a deep cut?",
+                "Help for deep cut?",
+                "Deep cut first aid?"
+            ],
+            "responses": [
+                "If someone has a deep cut, apply pressure to stop bleeding, clean the wound, and seek medical attention for stitches or further treatment."
+            ]
+        },
+        {
+            "name": "query9",
+            "patterns": [
+                "Signs of heatstroke?",
+                "Heatstroke symptoms?",
+                "What are the signs of a heatstroke?"
+            ],
+            "responses": [
+                "Signs of heatstroke include high body temperature, rapid pulse, and confusion. Cool the person down and seek medical attention immediately."
+            ]
+        },
+        {
+            "name": "query10",
+            "patterns": [
+                "Frostbite first aid?",
+                "What should I do if someone has frostbite?",
+                "Help for frostbite?"
+            ],
+            "responses": [
+                "If someone has frostbite, gently warm the affected area and seek medical attention for further treatment."
+            ]
+        },
+        {
+            "name": "query11",
+            "patterns": [
+                "What are the signs of poisoning?",
+                "Signs of poisoning?",
+                "Poisoning symptoms?"
+            ],
+            "responses": [
+                "Signs of poisoning include nausea, vomiting, and confusion. Call poison control and seek emergency medical attention immediately."
+            ]
+        },
+        {
+            "name": "query12",
+            "patterns": [
+                "What should I do if someone has an electric shock?",
+                "Help for electric shock?",
+                "Electric shock first aid?"
+            ],
+            "responses": [
+                "If someone has an electric shock, turn off the power source (if safe), and call emergency services immediately."
+            ]
+        },
+        {
+            "name": "query13",
+            "patterns": [
+                "Hypothermia symptoms?",
+                "What are the signs of hypothermia?",
+                "Signs of hypothermia?"
+            ],
+            "responses": [
+                "Signs of hypothermia include shivering, confusion, and slowed heart rate. Warm the person slowly and seek medical attention immediately."
+            ]
+        },
+        {
+            "name": "query14",
+            "patterns": [
+                "Help for bee sting?",
+                "What should I do if someone has a bee sting?",
+                "Bee sting first aid?"
+            ],
+            "responses": [
+                "If someone has a bee sting, remove the stinger if visible, wash the area, and apply a cold compress. Seek medical attention if symptoms worsen or if there's an allergic reaction. Use antihistamines for swelling."
+            ]
+        },
+        {
+            "name": "query15",
+            "patterns": [
+                "What is the difference between a heart attack and a cardiac arrest?",
+                "Cardiac arrest vs heart attack?",
+                "Heart attack vs cardiac arrest?"
+            ],
+            "responses": [
+                "A heart attack occurs when blood flow to the heart is blocked, while cardiac arrest is when the heart suddenly stops beating. Both are medical emergencies requiring immediate attention."
+            ]
+        },
+        {
+            "name": "query16",
+            "patterns": [
+                "What is the difference between heat exhaustion and heatstroke?",
+                "Heatstroke vs heat exhaustion?",
+                "Heat exhaustion vs heatstroke?"
+            ],
+            "responses": [
+                "Heat exhaustion is a milder form of heat-related illness, while heatstroke is a severe and life-threatening condition. Both require cooling and hydration, but heatstroke needs immediate medical attention."
+            ]
+        },
+        {
+            "name": "query17",
+            "patterns": [
+                "Snake bite first aid?",
+                "What should I do if someone has a snake bite?",
+                "Help for snake bite?"
+            ],
+            "responses": [
+                "If someone has a snake bite, keep the person calm, immobilize the bitten area, and seek medical attention immediately."
+            ]
+        },
+        {
+            "name": "query18",
+            "patterns": [
+                "Pulmonary embolism symptoms?",
+                "What are the signs of a pulmonary embolism?",
+                "Signs of pulmonary embolism?"
+            ],
+            "responses": [
+                "Signs of a pulmonary embolism include shortness of breath, chest pain, and coughing up blood. Seek emergency medical attention immediately."
+            ]
+        },
+        {
+            "name": "query19",
+            "patterns": [
+                "What should I do if someone has a nosebleed?",
+                "Help for nosebleed?",
+                "Nosebleed first aid?"
+            ],
+            "responses": [
+                "If someone has a nosebleed, have them sit upright, lean forward, and pinch the nostrils together. Apply ice and seek medical attention if bleeding doesn't stop."
+            ]
+        },
+        {
+            "name": "query20",
+            "patterns": [
+                "What are the signs of a diabetic emergency?",
+                "Signs of diabetic emergency?",
+                "Diabetic emergency symptoms?"
+            ],
+            "responses": [
+                "Signs of a diabetic emergency include high or low blood sugar levels, confusion, and dizziness. If conscious, give sugar or glucose and seek medical attention."
+            ]
+        },
+        {
+            "name": "query21",
+            "patterns": [
+                "Sprain first aid?",
+                "What should I do if someone has a sprain?",
+                "Help for sprain?"
+            ],
+            "responses": [
+                "If someone has a sprain, rest the injured area, apply ice, and elevate the limb. Seek medical attention if pain and swelling persist."
+            ]
+        },
+        {
+            "name": "query22",
+            "patterns": [
+                "Signs of severe allergic reaction?",
+                "What are the signs of a severe allergic reaction?",
+                "Severe allergic reaction symptoms?"
+            ],
+            "responses": [
+                "Signs of a severe allergic reaction include difficulty breathing, swelling, and a rapid pulse. Administer epinephrine (if available) and call emergency services immediately."
+            ]
+        },
+        {
+            "name": "query23",
+            "patterns": [
+                "Heat rash first aid?",
+                "Help for heat rash?",
+                "What should I do if someone has a heat rash?"
+            ],
+            "responses": [
+                "If someone has a heat rash, keep the affected area dry and cool. Avoid tight clothing and use calamine lotion for relief."
+            ]
+        },
+        {
+            "name": "query24",
+            "patterns": [
+                "Seizure symptoms?",
+                "What are the signs of a seizure?",
+                "Signs of seizure?"
+            ],
+            "responses": [
+                "Signs of a seizure include uncontrollable shaking, confusion, and loss of consciousness. Protect the person from injury and call emergency services if it lasts more than five minutes."
+            ]
+        },
+        {
+            "name": "query25",
+            "patterns": [
+                "What should I do if someone has an eye injury?",
+                "Eye injury first aid?",
+                "Help for eye injury?"
+            ],
+            "responses": [
+                "If someone has an eye injury, do not rub the eye, gently rinse with water, and cover with a protective shield. Seek medical attention immediately."
+            ]
+        },
+        {
+            "name": "query26",
+            "patterns": [
+                "What causes high cholesterol?",
+                "Reasons for high cholesterol?",
+                "Causes of high cholesterol?"
+            ],
+            "responses": [
+                "High cholesterol can be caused by an unhealthy diet, lack of exercise, smoking, and genetics."
+            ]
+        },
+        {
+            "name": "query27",
+            "patterns": [
+                "Help for concussion?",
+                "What should I do if someone has a concussion?",
+                "Concussion first aid?"
+            ],
+            "responses": [
+                "If someone has a concussion, have them rest and avoid physical activity. Seek medical attention for diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query28",
+            "patterns": [
+                "What are the signs of a spider bite?",
+                "Spider bite symptoms?",
+                "Signs of spider bite?"
+            ],
+            "responses": [
+                "Signs of a spider bite include pain, swelling, and redness around the bite. Clean the area and apply a cold compress."
+            ]
+        },
+        {
+            "name": "query29",
+            "patterns": [
+                "How can I prevent osteoporosis?",
+                "Ways to prevent osteoporosis?",
+                "Tips to avoid osteoporosis?"
+            ],
+            "responses": [
+                "To prevent osteoporosis, consume a diet rich in calcium and vitamin D, engage in regular weight-bearing exercise, avoid smoking, and limit alcohol consumption. Consult your healthcare provider for personalized advice."
+            ]
+        },
+        {
+            "name": "query30",
+            "patterns": [
+                "How to treat acid reflux?",
+                "Best remedies for acid reflux?",
+                "Cure for acid reflux?"
+            ],
+            "responses": [
+                "To treat acid reflux, avoid trigger foods, eat smaller meals, elevate the head of your bed, avoid lying down after eating, and use over-the-counter medications. Consult your healthcare provider if symptoms persist."
+            ]
+        },
+        {
+            "name": "query31",
+            "patterns": [
+                "What are the symptoms of anemia?",
+                "Signs of anemia?",
+                "Anemia symptoms?"
+            ],
+            "responses": [
+                "Symptoms of anemia include fatigue, weakness, pale skin, shortness of breath, and dizziness. Consult a doctor for proper diagnosis."
+            ]
+        },
+        {
+            "name": "query32",
+            "patterns": [
+                "How to treat bronchitis?",
+                "Bronchitis treatment?",
+                "What to do for bronchitis?"
+            ],
+            "responses": [
+                "To treat bronchitis, rest, stay hydrated, and use over-the-counter cough medicines. Seek medical help if symptoms persist."
+            ]
+        },
+        {
+            "name": "query33",
+            "patterns": [
+                "What are the symptoms of diabetes?",
+                "Signs of diabetes?",
+                "Diabetes symptoms?"
+            ],
+            "responses": [
+                "Symptoms of diabetes include frequent urination, excessive thirst, extreme hunger, weight loss, and fatigue. See a doctor for testing."
+            ]
+        },
+        {
+            "name": "query34",
+            "patterns": [
+                "How to relieve a migraine?",
+                "Migraine relief tips?",
+                "What to do for a migraine?"
+            ],
+            "responses": [
+                "To relieve a migraine, rest in a dark, quiet room, apply a cold compress to your head, and take prescribed migraine medications."
+            ]
+        },
+        {
+            "name": "query35",
+            "patterns": [
+                "How to treat a pinched nerve?",
+                "Pinched nerve treatment?",
+                "What to do for a pinched nerve?"
+            ],
+            "responses": [
+                "To treat a pinched nerve, rest, apply ice or heat, and take over-the-counter pain relievers. Consult a doctor if pain persists."
+            ]
+        },
+        {
+            "name": "query36",
+            "patterns": [
+                "How to treat strep throat?",
+                "Strep throat treatment?",
+                "What to do for strep throat?"
+            ],
+            "responses": [
+                "To treat strep throat, take prescribed antibiotics, rest, and stay hydrated. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query37",
+            "patterns": [
+                "What are the symptoms of asthma?",
+                "Signs of asthma?",
+                "Asthma symptoms?"
+            ],
+            "responses": [
+                "Symptoms of asthma include wheezing, shortness of breath, chest tightness, and coughing. Consult a doctor for proper management."
+            ]
+        },
+        {
+            "name": "query38",
+            "patterns": [
+                "How to treat dehydration?",
+                "Dehydration treatment?",
+                "What to do for dehydration?"
+            ],
+            "responses": [
+                "To treat dehydration, drink plenty of water, consume oral rehydration solutions, and avoid caffeine and alcohol. Seek medical help if severe."
+            ]
+        },
+        {
+            "name": "query39",
+            "patterns": [
+                "What are the symptoms of appendicitis?",
+                "Signs of appendicitis?",
+                "Appendicitis symptoms?"
+            ],
+            "responses": [
+                "Symptoms of appendicitis include sharp abdominal pain, fever, nausea, and loss of appetite. Seek immediate medical attention."
+            ]
+        },
+        {
+            "name": "query40",
+            "patterns": [
+                "How to treat a cold?",
+                "Cold treatment?",
+                "What to do for a cold?"
+            ],
+            "responses": [
+                "To treat a cold, rest, drink fluids, use over-the-counter cold medications, and stay warm. Consult a doctor if symptoms persist."
+            ]
+        },
+        {
+            "name": "query41",
+            "patterns": [
+                "What are the symptoms of a UTI?",
+                "Signs of a UTI?",
+                "UTI symptoms?"
+            ],
+            "responses": [
+                "Symptoms of a UTI include frequent urination, burning sensation, cloudy urine, and lower abdominal pain. See a doctor for antibiotics."
+            ]
+        },
+        {
+            "name": "query42",
+            "patterns": [
+                "How to treat insomnia?",
+                "Insomnia treatment?",
+                "What to do for insomnia?"
+            ],
+            "responses": [
+                "To treat insomnia, establish a regular sleep routine, avoid caffeine and screens before bed, and consider relaxation techniques. Consult a doctor for severe cases."
+            ]
+        },
+        {
+            "name": "query43",
+            "patterns": [
+                "What are the symptoms of allergies?",
+                "Signs of allergies?",
+                "Allergy symptoms?"
+            ],
+            "responses": [
+                "Symptoms of allergies include sneezing, itchy eyes, runny nose, and skin rashes. Avoid allergens and use antihistamines for relief."
+            ]
+        },
+        {
+            "name": "query44",
+            "patterns": [
+                "How to treat diarrhea?",
+                "Diarrhea treatment?",
+                "What to do for diarrhea?"
+            ],
+            "responses": [
+                "To treat diarrhea, stay hydrated, consume bland foods, and avoid dairy and fatty foods. Seek medical help if it persists."
+            ]
+        },
+        {
+            "name": "query45",
+            "patterns": [
+                "What are the symptoms of the flu?",
+                "Signs of the flu?",
+                "Flu symptoms?"
+            ],
+            "responses": [
+                "Symptoms of the flu include fever, chills, muscle aches, cough, and fatigue. Rest, stay hydrated, and take over-the-counter medications."
+            ]
+        },
+        {
+            "name": "query46",
+            "patterns": [
+                "How to treat a headache?",
+                "Headache treatment?",
+                "What to do for a headache?"
+            ],
+            "responses": [
+                "To treat a headache, rest in a quiet, dark room, apply a cold or warm compress, and take over-the-counter pain relievers."
+            ]
+        },
+        {
+            "name": "query47",
+            "patterns": [
+                "What are the symptoms of hypertension?",
+                "Signs of hypertension?",
+                "Hypertension symptoms?"
+            ],
+            "responses": [
+                "Symptoms of hypertension include headaches, dizziness, and nosebleeds. Regular monitoring and a healthy lifestyle are crucial."
+            ]
+        },
+        {
+            "name": "query48",
+            "patterns": [
+                "How to treat rosacea?",
+                "Rosacea treatment?",
+                "What to do for rosacea?"
+            ],
+            "responses": [
+                "To treat rosacea, avoid triggers, use gentle skincare products, and apply prescribed medications. Consult a dermatologist for proper management."
+            ]
+        },
+        {
+            "name": "query49",
+            "patterns": [
+                "What are the symptoms of COVID-19?",
+                "Signs of COVID-19?",
+                "COVID-19 symptoms?"
+            ],
+            "responses": [
+                "Symptoms of COVID-19 include fever, cough, shortness of breath, fatigue, and loss of taste or smell. Isolate and seek medical advice."
+            ]
+        },
+        {
+            "name": "query50",
+            "patterns": [
+                "How to treat indigestion?",
+                "Indigestion treatment?",
+                "What to do for indigestion?"
+            ],
+            "responses": [
+                "To treat indigestion, avoid fatty foods, eat smaller meals, stay upright after eating, and use antacids. Consult a doctor if persistent."
+            ]
+        },
+        {
+            "name": "query51",
+            "patterns": [
+                "How to treat a blister?",
+                "Blister treatment?",
+                "What to do for a blister?"
+            ],
+            "responses": [
+                "To treat a blister, clean it with soap and water, cover with a bandage, and avoid popping it. Seek medical help if it becomes infected."
+            ]
+        },
+        {
+            "name": "query52",
+            "patterns": [
+                "What are the symptoms of anxiety?",
+                "Signs of anxiety?",
+                "Anxiety symptoms?"
+            ],
+            "responses": [
+                "Symptoms of anxiety include excessive worry, restlessness, fatigue, and difficulty concentrating. Consider therapy and relaxation techniques."
+            ]
+        },
+        {
+            "name": "query53",
+            "patterns": [
+                "How to treat a cold sore?",
+                "Cold sore treatment?",
+                "What to do for a cold sore?"
+            ],
+            "responses": [
+                "To treat a cold sore, apply antiviral creams, keep the area clean, and avoid touching the sore. Consult a doctor for prescription medications."
+            ]
+        },
+        {
+            "name": "query54",
+            "patterns": [
+                "What are the symptoms of depression?",
+                "Signs of depression?",
+                "Depression symptoms?"
+            ],
+            "responses": [
+                "Symptoms of depression include persistent sadness, loss of interest in activities, changes in appetite, and fatigue. Seek professional help."
+            ]
+        },
+        {
+            "name": "query55",
+            "patterns": [
+                "How to treat a rash?",
+                "Rash treatment?",
+                "What to do for a rash?"
+            ],
+            "responses": [
+                "To treat a rash, avoid irritants, apply soothing lotions, and keep the area clean and dry. Seek medical advice if it persists."
+            ]
+        },
+        {
+            "name": "query56",
+            "patterns": [
+                "What are the symptoms of an ear-infection?",
+                "Signs of an ear-infection?",
+                "Ear-infection symptoms?"
+            ],
+            "responses": [
+                "Symptoms of an ear infection include ear pain, fluid drainage, hearing loss, and fever. Consult a doctor for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query57",
+            "patterns": [
+                "How to treat food poisoning?",
+                "Food poisoning treatment?",
+                "What to do for food poisoning?"
+            ],
+            "responses": [
+                "To treat food poisoning, rest, stay hydrated, and eat bland foods. Seek medical help if symptoms are severe or persist."
+            ]
+        },
+        {
+            "name": "query58",
+            "patterns": [
+                "What are the symptoms of meningitis?",
+                "Signs of meningitis?",
+                "Meningitis symptoms?"
+            ],
+            "responses": [
+                "Symptoms of meningitis include severe headache, fever, stiff neck, and sensitivity to light. Seek emergency medical help immediately."
+            ]
+        },
+        {
+            "name": "query59",
+            "patterns": [
+                "How to treat motion sickness?",
+                "Motion sickness treatment?",
+                "What to do for motion sickness?"
+            ],
+            "responses": [
+                "To treat motion sickness, sit in a stable position, focus on the horizon, and use over-the-counter medications like dimenhydrinate."
+            ]
+        },
+        {
+            "name": "query60",
+            "patterns": [
+                "What are the symptoms of pneumonia?",
+                "Signs of pneumonia?",
+                "Pneumonia symptoms?"
+            ],
+            "responses": [
+                "Symptoms of pneumonia include chest pain, cough, fever, and difficulty breathing. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query61",
+            "patterns": [
+                "How to treat ringworm?",
+                "Ringworm treatment?",
+                "What to do for ringworm?"
+            ],
+            "responses": [
+                "To treat ringworm, apply antifungal creams, keep the area clean and dry, and avoid sharing personal items. Consult a doctor if it persists."
+            ]
+        },
+        {
+            "name": "query62",
+            "patterns": [
+                "What are the symptoms of a panic attack?",
+                "Signs of a panic attack?",
+                "Panic attack symptoms?"
+            ],
+            "responses": [
+                "Symptoms of a panic attack include rapid heartbeat, sweating, trembling, and a feeling of impending doom. Seek professional help."
+            ]
+        },
+        {
+            "name": "query63",
+            "patterns": [
+                "How to treat scabies?",
+                "Scabies treatment?",
+                "What to do for scabies?"
+            ],
+            "responses": [
+                "To treat scabies, apply prescription creams, wash bedding and clothing in hot water, and avoid close contact with others. Consult a doctor."
+            ]
+        },
+        {
+            "name": "query64",
+            "patterns": [
+                "What are the symptoms of measles?",
+                "Signs of measles?",
+                "Measles symptoms?"
+            ],
+            "responses": [
+                "Symptoms of measles include fever, cough, runny nose, and a red rash. Seek medical attention and ensure vaccination."
+            ]
+        },
+        {
+            "name": "query65",
+            "patterns": [
+                "How to treat sunburn?",
+                "Sunburn treatment?",
+                "What to do for sunburn?"
+            ],
+            "responses": [
+                "To treat sunburn, apply aloe vera gel, take cool baths, and stay hydrated. Avoid further sun exposure and seek medical help if severe."
+            ]
+        },
+        {
+            "name": "query66",
+            "patterns": [
+                "What are the symptoms of chickenpox?",
+                "Signs of chickenpox?",
+                "Chickenpox symptoms?"
+            ],
+            "responses": [
+                "Symptoms of chickenpox include itchy rash, fever, and tiredness. Consult a doctor for proper treatment and avoid scratching."
+            ]
+        },
+        {
+            "name": "query67",
+            "patterns": [
+                "How to treat a sinus-infection?",
+                "Sinus-infection treatment?",
+                "What to do for a sinus-infection?"
+            ],
+            "responses": [
+                "To treat a sinus infection, use saline nasal sprays, stay hydrated, and take over-the-counter pain relievers. Consult a doctor if it persists."
+            ]
+        },
+        {
+            "name": "query68",
+            "patterns": [
+                "What are the symptoms of the common cold?",
+                "Signs of the common cold?",
+                "Common cold symptoms?"
+            ],
+            "responses": [
+                "Symptoms of the common cold include runny nose, sore throat, cough, and congestion. Rest, stay hydrated, and use over-the-counter remedies."
+            ]
+        },
+        {
+            "name": "query69",
+            "patterns": [
+                "How to treat an ingrown toenail?",
+                "Ingrown toenail treatment?",
+                "What to do for an ingrown toenail?"
+            ],
+            "responses": [
+                "To treat an ingrown toenail, soak your foot in warm water, keep the area clean, and wear comfortable shoes. Consult a doctor if it becomes infected."
+            ]
+        },
+        {
+            "name": "query70",
+            "patterns": [
+                "What are the symptoms of RSV?",
+                "Signs of RSV?",
+                "RSV symptoms?"
+            ],
+            "responses": [
+                "Symptoms of RSV include coughing, wheezing, and difficulty breathing. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query71",
+            "patterns": [
+                "How to treat a toothache?",
+                "Toothache treatment?",
+                "What to do for a toothache?"
+            ],
+            "responses": [
+                "To treat a toothache, rinse with warm salt water, take over-the-counter pain relievers, and avoid extreme temperatures. See a dentist if pain persists."
+            ]
+        },
+        {
+            "name": "query72",
+            "patterns": [
+                "What are the symptoms of jaundice?",
+                "Signs of jaundice?",
+                "Jaundice symptoms?"
+            ],
+            "responses": [
+                "Symptoms of jaundice include yellowing of the skin and eyes, dark urine, and pale stools. Consult a doctor for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query73",
+            "patterns": [
+                "How to treat a yeast-infection?",
+                "Yeast-infection treatment?",
+                "What to do for a yeast-infection?"
+            ],
+            "responses": [
+                "To treat a yeast infection, use over-the-counter antifungal creams or consult a doctor for prescription medications."
+            ]
+        },
+        {
+            "name": "query74",
+            "patterns": [
+                "What are the symptoms of Lyme-disease?",
+                "Signs of Lyme-disease?",
+                "Lyme-disease symptoms?"
+            ],
+            "responses": [
+                "Symptoms of Lyme disease include a bull's-eye rash, fever, chills, and muscle aches. Seek medical help if you suspect Lyme disease."
+            ]
+        },
+        {
+            "name": "query75",
+            "patterns": [
+                "What are the symptoms of a kidney stone?",
+                "Signs of a kidney stone?",
+                "Kidney stone symptoms?"
+            ],
+            "responses": [
+                "Symptoms of a kidney stone include severe pain in the back or side, nausea, and blood in the urine. Seek medical help immediately."
+            ]
+        },
+        {
+            "name": "query76",
+            "patterns": [
+                "How can I lower high blood pressure?",
+                "Ways to reduce blood pressure?",
+                "Tips for lowering blood pressure?"
+            ],
+            "responses": [
+                "To lower high blood pressure, reduce salt intake, maintain a healthy diet, exercise regularly, avoid smoking, and limit alcohol consumption. Consult your healthcare provider for personalized advice."
+            ]
+        },
+        {
+            "name": "query77",
+            "patterns": [
+                "How to treat a sprained wrist?",
+                "Sprained wrist treatment?",
+                "What to do for a sprained wrist?"
+            ],
+            "responses": [
+                "For a sprained wrist, rest, apply ice, compress with an elastic bandage, and elevate the wrist. Consult a doctor if pain persists."
+            ]
+        },
+        {
+            "name": "query78",
+            "patterns": [
+                "What are the symptoms of gastroenteritis?",
+                "Signs of gastroenteritis?",
+                "Gastroenteritis symptoms?"
+            ],
+            "responses": [
+                "Symptoms of gastroenteritis include diarrhea, vomiting, stomach cramps, and fever. Stay hydrated and seek medical help if symptoms are severe."
+            ]
+        },
+        {
+            "name": "query79",
+            "patterns": [
+                "What are the symptoms of hepatitis B?",
+                "Signs of hepatitis B?",
+                "Hepatitis B symptoms?"
+            ],
+            "responses": [
+                "Symptoms of hepatitis B include jaundice, fatigue, abdominal pain, and dark urine. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query80",
+            "patterns": [
+                "How to treat a black-eye?",
+                "Black-eye treatment?",
+                "What to do for a black-eye?"
+            ],
+            "responses": [
+                "To treat a black eye, apply a cold compress, rest, and avoid further injury to the area. Seek medical help if there are vision changes or severe pain."
+            ]
+        },
+        {
+            "name": "query81",
+            "patterns": [
+                "What are the symptoms of gout?",
+                "Signs of gout?",
+                "Gout symptoms?"
+            ],
+            "responses": [
+                "Symptoms of gout include sudden, severe joint pain, redness, and swelling. Consult a doctor for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query82",
+            "patterns": [
+                "How to treat pink-eye?",
+                "Pink-seye treatment?",
+                "What to do for pink-eye?"
+            ],
+            "responses": [
+                "To treat pink eye, keep the eye clean, avoid touching it, and use prescribed eye drops. Consult a doctor for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query83",
+            "patterns": [
+                "What are the symptoms of mononucleosis?",
+                "Signs of mononucleosis?",
+                "Mononucleosis symptoms?"
+            ],
+            "responses": [
+                "Symptoms of mononucleosis include fever, sore throat, swollen lymph nodes, and fatigue. Rest and stay hydrated. Seek medical advice."
+            ]
+        },
+        {
+            "name": "query84",
+            "patterns": [
+                "How to treat a stomach ache?",
+                "Stomach ache treatment?",
+                "What to do for a stomach ache?"
+            ],
+            "responses": [
+                "To treat a stomach ache, rest, drink clear fluids, and avoid solid food for a few hours. Consult a doctor if pain persists or is severe."
+            ]
+        },
+        {
+            "name": "query85",
+            "patterns": [
+                "How to treat a swollen ankle?",
+                "Swollen ankle treatment?",
+                "What to do for a swollen ankle?"
+            ],
+            "responses": [
+                "To treat a swollen ankle, rest, apply ice, compress with an elastic bandage, and elevate the foot. Consult a doctor if swelling persists."
+            ]
+        },
+        {
+            "name": "query86",
+            "patterns": [
+                "What are the symptoms of hyperthyroidism?",
+                "Signs of hyperthyroidism?",
+                "Hyperthyroidism symptoms?"
+            ],
+            "responses": [
+                "Symptoms of hyperthyroidism include rapid heartbeat, weight loss, nervousness, and sweating. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query87",
+            "patterns": [
+                "How to treat lice?",
+                "Lice treatment?",
+                "What to do for lice?"
+            ],
+            "responses": [
+                "To treat lice, use over-the-counter or prescription shampoos, comb out the nits, and wash clothing and bedding in hot water."
+            ]
+        },
+        {
+            "name": "query88",
+            "patterns": [
+                "What are the symptoms of hypothyroidism?",
+                "Signs of hypothyroidism?",
+                "Hypothyroidism symptoms?"
+            ],
+            "responses": [
+                "Symptoms of hypothyroidism include fatigue, weight gain, cold intolerance, and dry skin. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query89",
+            "patterns": [
+                "What are the symptoms of an ectopic pregnancy?",
+                "Signs of an ectopic pregnancy?",
+                "Ectopic pregnancy symptoms?"
+            ],
+            "responses": [
+                "Symptoms of an ectopic pregnancy include sharp abdominal pain, dizziness, and abnormal bleeding. Seek emergency medical help immediately."
+            ]
+        },
+        {
+            "name": "query90",
+            "patterns": [
+                "What are the symptoms of MRSA?",
+                "Signs of MRSA?",
+                "MRSA symptoms?"
+            ],
+            "responses": [
+                "Symptoms of MRSA include red, swollen, and painful skin infections. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query91",
+            "patterns": [
+                "How to treat a sore throat?",
+                "Sore throat treatment?",
+                "What to do for a sore throat?"
+            ],
+            "responses": [
+                "To treat a sore throat, drink warm liquids, use throat lozenges, and take over-the-counter pain relievers. Seek medical help if it persists."
+            ]
+        },
+        {
+            "name": "query92",
+            "patterns": [
+                "What are the symptoms of tuberculosis?",
+                "Signs of tuberculosis?",
+                "Tuberculosis symptoms?"
+            ],
+            "responses": [
+                "Symptoms of tuberculosis include a persistent cough, weight loss, night sweats, and fever. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query93",
+            "patterns": [
+                "How to treat eczema?",
+                "Eczema treatment?",
+                "What to do for eczema?"
+            ],
+            "responses": [
+                "To treat eczema, use moisturizers, avoid triggers, and apply prescription creams. Consult a doctor for severe cases."
+            ]
+        },
+        {
+            "name": "query94",
+            "patterns": [
+                "What are the symptoms of lupus?",
+                "Signs of lupus?",
+                "Lupus symptoms?"
+            ],
+            "responses": [
+                "Symptoms of lupus include fatigue, joint pain, skin rashes, and fever. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query95",
+            "patterns": [
+                "How to treat sciatica?",
+                "Sciatica treatment?",
+                "What to do for sciatica?"
+            ],
+            "responses": [
+                "To treat sciatica, apply heat or cold packs, take over-the-counter pain relievers, and do gentle stretching exercises. Consult a doctor if pain persists."
+            ]
+        },
+        {
+            "name": "query96",
+            "patterns": [
+                "What are the symptoms of GERD?",
+                "Signs of GERD?",
+                "GERD symptoms?"
+            ],
+            "responses": [
+                "Symptoms of GERD include heartburn, regurgitation, and chest pain. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query97",
+            "patterns": [
+                "What are the symptoms of bipolar disorder?",
+                "Signs of bipolar disorder?",
+                "Bipolar disorder symptoms?"
+            ],
+            "responses": [
+                "Symptoms of bipolar disorder include mood swings, periods of depression, and episodes of mania. Seek professional help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query98",
+            "patterns": [
+                "How to treat hemorrhoids?",
+                "Hemorrhoid treatment?",
+                "What to do for hemorrhoids?"
+            ],
+            "responses": [
+                "To treat hemorrhoids, use over-the-counter creams, take warm baths, and avoid straining during bowel movements. Consult a doctor if symptoms persist."
+            ]
+        },
+        {
+            "name": "query99",
+            "patterns": [
+                "What are the symptoms of ADHD?",
+                "Signs of ADHD?",
+                "ADHD symptoms?"
+            ],
+            "responses": [
+                "Symptoms of ADHD include inattention, hyperactivity, and impulsiveness. Seek professional help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query100",
+            "patterns": [
+                "How to treat psoriasis?",
+                "Psoriasis treatment?",
+                "What to do for psoriasis?"
+            ],
+            "responses": [
+                "To treat psoriasis, use moisturizers, apply prescription creams, and avoid triggers. Consult a doctor for proper management."
+            ]
+        },
+        {
+            "name": "query101",
+            "patterns": [
+                "How to treat acne?",
+                "Acne treatment?",
+                "What to do for acne?"
+            ],
+            "responses": [
+                "To treat acne, use over-the-counter products, keep the skin clean, and avoid picking at pimples. Consult a dermatologist for severe cases."
+            ]
+        },
+        {
+            "name": "query102",
+            "patterns": [
+                "What are the symptoms of Celiac-disease?",
+                "Signs of Celiac-disease?",
+                "Celiac-disease symptoms?"
+            ],
+            "responses": [
+                "Symptoms of Celiac disease include diarrhea, weight loss, and bloating. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query103",
+            "patterns": [
+                "What are the symptoms of a urinary tract-infection?",
+                "Signs of a urinary tract-infection?",
+                "Urinary tract-infection symptoms?"
+            ],
+            "responses": [
+                "Symptoms of a urinary tract infection include burning during urination, frequent urination, and cloudy urine. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query104",
+            "patterns": [
+                "What are the symptoms of Parkinson's-disease?",
+                "Signs of Parkinson's-disease?",
+                "Parkinson's-disease symptoms?"
+            ],
+            "responses": [
+                "Symptoms of Parkinson's disease include tremors, stiffness, slow movement, and balance problems. Seek medical help for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query105",
+            "patterns": [
+                "How to treat athlete's foot?",
+                "Athlete's foot treatment?",
+                "What to do for athlete's foot?"
+            ],
+            "responses": [
+                "To treat athlete's foot, use antifungal creams, keep the feet dry, and avoid sharing personal items. Consult a doctor if it persists."
+            ]
+        },
+        {
+            "name": "query106",
+            "patterns": [
+                "What are the symptoms of a blood clot?",
+                "Signs of a blood clot?",
+                "Blood clot symptoms?"
+            ],
+            "responses": [
+                "Symptoms of a blood clot include swelling, pain, and redness. Seek medical help immediately for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query107",
+            "patterns": [
+                "How to treat an ulcer?",
+                "Ulcer treatment?",
+                "What to do for an ulcer?"
+            ],
+            "responses": [
+                "To treat an ulcer, avoid spicy foods, take prescribed medications, and manage stress. Consult a doctor for proper diagnosis and treatment."
+            ]
+        },
+        {
+            "name": "query108",
+            "patterns": [
+                "How to treat a pulled muscle?",
+                "Pulled muscle treatment?",
+                "What to do for a pulled muscle?"
+            ],
+            "responses": [
+                "To treat a pulled muscle, rest, apply ice, and use over-the-counter pain relievers. Consult a doctor if pain persists."
+            ]
+        }
+    ]
+}

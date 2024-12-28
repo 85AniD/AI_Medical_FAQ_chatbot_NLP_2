@@ -1,12 +1,12 @@
 import sys
 import os
 
-# Add the path to the loginRegister folder explicitly
+# Add the 'loginRegister' and 'db' folders to sys.path for module imports
 sys.path.append(os.path.join(os.getcwd(), 'loginRegister'))
 sys.path.append(os.path.join(os.getcwd(), 'db'))
 
 from flask import Flask, request, jsonify
-from processor import chatbot_response, register  # assuming processor.py is in the same folder as app.py
+from processor import chatbot_response, register
 from db.database import fetch_query, execute_query
 
 # Initialize Flask app
@@ -44,17 +44,23 @@ def user_register():
 @app.route('/users', methods=['GET'])
 def get_users():
     """Fetch all registered users."""
-    query = "SELECT id, username, email, created_at FROM users"
-    users = fetch_query(query)
-    return jsonify(users)
+    try:
+        query = "SELECT id, username, email, created_at FROM users"
+        users = fetch_query(query)
+        return jsonify(users)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Fetch FAQs endpoint
 @app.route('/faqs', methods=['GET'])
 def get_faqs():
     """Fetch all FAQs."""
-    query = "SELECT id, question, answer, created_at FROM faqs"
-    faqs = fetch_query(query)
-    return jsonify(faqs)
+    try:
+        query = "SELECT id, question, answer, created_at FROM faqs"
+        faqs = fetch_query(query)
+        return jsonify(faqs)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Add a new FAQ endpoint
 @app.route('/faqs', methods=['POST'])
@@ -65,9 +71,12 @@ def add_faq():
     answer = faq.get("answer")
     if not question or not answer:
         return jsonify({"error": "Question and answer are required"}), 400
-    query = "INSERT INTO faqs (question, answer) VALUES (%s, %s)"
-    execute_query(query, (question, answer))
-    return jsonify({"message": "FAQ added successfully!"})
+    try:
+        query = "INSERT INTO faqs (question, answer) VALUES (%s, %s)"
+        execute_query(query, (question, answer))
+        return jsonify({"message": "FAQ added successfully!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Run the Flask app
 if __name__ == '__main__':

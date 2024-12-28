@@ -1,35 +1,55 @@
-import sys
 import os
-
-# Ensure 'db' is in the system path
-sys.path.append(os.path.join(os.getcwd(), 'db'))
-
-from db.database import execute_query  # Now this should work
-
+import sys
 import json
 import random
-from keras.models import load_model
-from nltk.stem import WordNetLemmatizer
-import numpy as np
 import pickle
 import nltk
+from keras.models import load_model
+import numpy as np
+from nltk.stem import WordNetLemmatizer
 
+# Ensure that NLTK punkt data is downloaded
 nltk.download('punkt')
+
+# Set up paths to your data folder
+data_folder = os.path.join(os.getcwd(), 'loginRegister', 'data')
+
+# Check if data folder exists
+if not os.path.exists(data_folder):
+    raise FileNotFoundError(f"Data folder not found: {data_folder}")
+
+# File paths
+intents_file = os.path.join(data_folder, 'intents.json')
+words_file = os.path.join(data_folder, 'words.pkl')
+classes_file = os.path.join(data_folder, 'classes.pkl')
+model_file = os.path.join(data_folder, 'chatbot_model.h5')
+
+# Load the files
+try:
+    with open(intents_file, encoding='utf-8') as f:
+        intents = json.load(f)
+except FileNotFoundError:
+    print(f"Error loading intents file: {intents_file}")
+    raise
+
+try:
+    words = pickle.load(open(words_file, 'rb'))
+    classes = pickle.load(open(classes_file, 'rb'))
+    model = load_model(model_file)
+except FileNotFoundError as e:
+    print(f"Error loading one or more files: {e}")
+    raise
+
+# Initialize lemmatizer
 lemmatizer = WordNetLemmatizer()
 
-# Load required files
-intents = json.load(open('data/intents.json', encoding='utf-8'))
-words = pickle.load(open('data/words.pkl', 'rb'))
-classes = pickle.load(open('data/classes.pkl', 'rb'))
-model = load_model('data/chatbot_model.h5')
-
+# Function to clean up the sentence (tokenize and lemmatize)
 def clean_up_sentence(sentence):
-    """Tokenizes and lemmatizes a sentence."""
     sentence_words = nltk.word_tokenize(sentence)
     return [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
 
+# Convert sentence to bag of words
 def bow(sentence, words, show_details=False):
-    """Convert a sentence into a bag-of-words."""
     sentence_words = clean_up_sentence(sentence)
     bag = [0] * len(words)
     for s in sentence_words:
@@ -40,8 +60,8 @@ def bow(sentence, words, show_details=False):
                     print(f"Found in bag: {w}")
     return np.array(bag)
 
+# Predict the class of the sentence
 def predict_class(sentence, model):
-    """Predict the class of a sentence."""
     p = bow(sentence, words, show_details=False)
     res = model.predict(np.array([p]))[0]
     ERROR_THRESHOLD = 0.25
@@ -49,8 +69,8 @@ def predict_class(sentence, model):
     results.sort(key=lambda x: x[1], reverse=True)
     return [{"intent": classes[r[0]], "probability": str(r[1])} for r in results]
 
+# Get response based on predicted class
 def get_response(ints, intents_json):
-    """Get a response for the predicted intent."""
     if not ints:
         return "Sorry, I don't understand that."
     tag = ints[0]['intent']
@@ -59,13 +79,13 @@ def get_response(ints, intents_json):
             return random.choice(i['responses'])
     return "You must ask the right questions."
 
+# Main function to generate chatbot response
 def chatbot_response(msg):
-    """Generate a chatbot response."""
     ints = predict_class(msg, model)
     return get_response(ints, intents)
 
+# Register a user in the database
 def register(userinfo):
-    """Register a user in the database."""
     query = """
     INSERT INTO users (username, email, password)
     VALUES (%s, %s, %s)
