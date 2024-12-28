@@ -1,3 +1,11 @@
+import sys
+import os
+
+# Ensure 'db' is in the system path
+sys.path.append(os.path.join(os.getcwd(), 'db'))
+
+from db.database import execute_query  # Now this should work
+
 import json
 import random
 from keras.models import load_model
@@ -5,7 +13,6 @@ from nltk.stem import WordNetLemmatizer
 import numpy as np
 import pickle
 import nltk
-from db.database import execute_query
 
 nltk.download('punkt')
 lemmatizer = WordNetLemmatizer()
