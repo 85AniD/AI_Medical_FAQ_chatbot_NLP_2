@@ -13,7 +13,7 @@
             background-size: cover;
             color: #343a40;
             font-family: Arial, sans-serif;
-            overflow: auto; /* scrolling in the main page */
+            overflow: auto;
         }
         h1 {
             margin-top: 50px;
@@ -45,7 +45,7 @@
             border-radius: 5px;
             min-height: 100px;
             max-height: 300px;
-            overflow-y: auto; /* Enable scrolling only in the response area */
+            overflow-y: auto;
         }
         #response p {
             margin: 0;
@@ -58,8 +58,8 @@
             background-color: #343a40;
             color: #ffffff;
             text-align: center;
-            height: 30px; /* Set the height of the footer */
-            line-height: 50px; /* Vertically center the text */
+            height: 30px;
+            line-height: 30px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -68,12 +68,10 @@
 <body>
     <div class="container">
         <h1>Welcome to <br> AI Medical FAQ ChatBot</h1>
-        <br>
         <hr>
-        <br>
         <div class="row">
             <div class="col-lg-9">
-                <input class="form-control" type="text" name="question" id="question" placeholder="Type your question here...">
+                <input class="form-control" type="text" id="question" placeholder="Type your question here..." autofocus>
             </div>
             <div class="col-lg-3">
                 <button class="btn btn-primary btn-block" id="submit-button">Send</button>
@@ -87,36 +85,46 @@
         </div>
     </div>
     <footer>
-        AI chatBot<br>
+        AI ChatBot &copy; 2024
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function sendQuery() {
+                const question = $("#question").val().trim();
+                if (!question) {
+                    alert("Please enter a question.");
+                    return;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "/chatbot",
-                    data: { question: $("#question").val() },
-                    success: function(result) {
-                        $("#response").append("<p><strong>Me:</strong> " + $("#question").val() + "</p><p><strong>AIbot:</strong> " + result.response + "</p>");
+                    contentType: "application/json",
+                    data: JSON.stringify({ question }),
+                    success: function (result) {
+                        appendMessage("Me", question);
+                        appendMessage("AIbot", result.response);
                         $("#question").val("");
-                        $('#response').animate({
-                            scrollTop: $('#response').prop("scrollHeight")
-                        }, 500);
                     },
-                    error: function() {
-                        alert('Error');
+                    error: function () {
+                        appendMessage("AIbot", "Sorry, something went wrong. Please try again.");
                     }
                 });
             }
 
-            $("#submit-button").click(function(e) {
+            function appendMessage(sender, message) {
+                const messageHtml = `<p><strong>${sender}:</strong> ${message}</p>`;
+                $("#response").append(messageHtml);
+                $("#response").scrollTop($("#response")[0].scrollHeight);
+            }
+
+            $("#submit-button").click(function (e) {
                 e.preventDefault();
                 sendQuery();
             });
 
-            $("#question").keypress(function(e) {
+            $("#question").keypress(function (e) {
                 if (e.which === 13) {
                     e.preventDefault();
                     sendQuery();

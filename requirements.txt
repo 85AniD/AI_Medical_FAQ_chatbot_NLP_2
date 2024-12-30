@@ -22,3 +22,6 @@ nltk
 keras
 tensorflow
 pickle-mixin
+bcrypt
+Flask-Session
+Flask-SQLAlchemy==3.1.1
