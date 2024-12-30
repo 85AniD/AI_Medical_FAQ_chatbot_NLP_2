@@ -1,4 +1,8 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from loginRegister.processor import chatbot_response
+
 
 def start_chatbot():
     """Starts a CLI-based chatbot."""

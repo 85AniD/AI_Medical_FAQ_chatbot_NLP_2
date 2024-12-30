@@ -1,7 +1,7 @@
 {
     "intents": [
         {
-            "name": "greeting",
+            "tag": "greeting",
             "patterns": [
                 "Is anyone there?",
                 "Hello",
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "name": "goodbye",
+            "tag": "goodbye",
             "patterns": [
                 "Goodbye",
                 "Bye",
@@ -29,7 +29,7 @@
             ]
         },
         {
-            "name": "thanks",
+            "tag": "thanks",
             "patterns": [
                 "Thanks",
                 "Thank you!",
@@ -43,7 +43,7 @@
             ]
         },
         {
-            "name": "hours",
+            "tag": "hours",
             "patterns": [
                 "What hours are you open?",
                 "What are your hours?",
@@ -55,7 +55,7 @@
             ]
         },
         {
-            "name": "location",
+            "tag": "location",
             "patterns": [
                 "What is your location?",
                 "Where are you located?",
@@ -67,7 +67,7 @@
             ]
         },
         {
-            "name": "age",
+            "tag": "age",
             "patterns": [
                 "How old are you?",
                 "What is your age?",
@@ -80,21 +80,21 @@
             ]
         },
         {
-            "name": "name",
+            "tag": "tag",
             "patterns": [
                 "Are you AniD?",
-                "What's your name?",
+                "What's your tag?",
                 "Who are you?",
-                "What is your name?"
+                "What is your tag?"
             ],
             "responses": [
                 "You can call me AniD.",
-                "Yes, my name is AniD.",
+                "Yes, my tag is AniD.",
                 "I'm AniD, the assistant of Aniruddha Das."
             ]
         },
         {
-            "name": "funny",
+            "tag": "funny",
             "patterns": [
                 "fun joke",
                 "Tell me a joke!",
@@ -109,7 +109,7 @@
             ]
         },
         {
-            "name": "query1",
+            "tag": "query1",
             "patterns": [
                 "Heart attack symptoms?",
                 "Signs of heart attack?",
@@ -120,7 +120,7 @@
             ]
         },
         {
-            "name": "query2",
+            "tag": "query2",
             "patterns": [
                 "Choking first aid?",
                 "What should I do if someone is choking?",
@@ -131,7 +131,7 @@
             ]
         },
         {
-            "name": "query3",
+            "tag": "query3",
             "patterns": [
                 "What are the signs of a stroke?",
                 "Signs of stroke?",
@@ -142,7 +142,7 @@
             ]
         },
         {
-            "name": "query4",
+            "tag": "query4",
             "patterns": [
                 "Help for severe burn?",
                 "What should I do if someone has a severe burn?",
@@ -153,7 +153,7 @@
             ]
         },
         {
-            "name": "query5",
+            "tag": "query5",
             "patterns": [
                 "Signs of anaphylaxis?",
                 "What are the signs of anaphylaxis?",
@@ -164,7 +164,7 @@
             ]
         },
         {
-            "name": "query6",
+            "tag": "query6",
             "patterns": [
                 "Help for broken bone?",
                 "What should I do if someone has a broken bone?",
@@ -175,7 +175,7 @@
             ]
         },
         {
-            "name": "query7",
+            "tag": "query7",
             "patterns": [
                 "How to treat a plantar wart?",
                 "Plantar wart treatment?",
@@ -186,7 +186,7 @@
             ]
         },
         {
-            "name": "query8",
+            "tag": "query8",
             "patterns": [
                 "What should I do if someone has a deep cut?",
                 "Help for deep cut?",
@@ -197,7 +197,7 @@
             ]
         },
         {
-            "name": "query9",
+            "tag": "query9",
             "patterns": [
                 "Signs of heatstroke?",
                 "Heatstroke symptoms?",
@@ -208,7 +208,7 @@
             ]
         },
         {
-            "name": "query10",
+            "tag": "query10",
             "patterns": [
                 "Frostbite first aid?",
                 "What should I do if someone has frostbite?",
@@ -219,7 +219,7 @@
             ]
         },
         {
-            "name": "query11",
+            "tag": "query11",
             "patterns": [
                 "What are the signs of poisoning?",
                 "Signs of poisoning?",
@@ -230,7 +230,7 @@
             ]
         },
         {
-            "name": "query12",
+            "tag": "query12",
             "patterns": [
                 "What should I do if someone has an electric shock?",
                 "Help for electric shock?",
@@ -241,7 +241,7 @@
             ]
         },
         {
-            "name": "query13",
+            "tag": "query13",
             "patterns": [
                 "Hypothermia symptoms?",
                 "What are the signs of hypothermia?",
@@ -252,7 +252,7 @@
             ]
         },
         {
-            "name": "query14",
+            "tag": "query14",
             "patterns": [
                 "Help for bee sting?",
                 "What should I do if someone has a bee sting?",
@@ -263,7 +263,7 @@
             ]
         },
         {
-            "name": "query15",
+            "tag": "query15",
             "patterns": [
                 "What is the difference between a heart attack and a cardiac arrest?",
                 "Cardiac arrest vs heart attack?",
@@ -274,7 +274,7 @@
             ]
         },
         {
-            "name": "query16",
+            "tag": "query16",
             "patterns": [
                 "What is the difference between heat exhaustion and heatstroke?",
                 "Heatstroke vs heat exhaustion?",
@@ -285,7 +285,7 @@
             ]
         },
         {
-            "name": "query17",
+            "tag": "query17",
             "patterns": [
                 "Snake bite first aid?",
                 "What should I do if someone has a snake bite?",
@@ -296,7 +296,7 @@
             ]
         },
         {
-            "name": "query18",
+            "tag": "query18",
             "patterns": [
                 "Pulmonary embolism symptoms?",
                 "What are the signs of a pulmonary embolism?",
@@ -307,7 +307,7 @@
             ]
         },
         {
-            "name": "query19",
+            "tag": "query19",
             "patterns": [
                 "What should I do if someone has a nosebleed?",
                 "Help for nosebleed?",
@@ -318,7 +318,7 @@
             ]
         },
         {
-            "name": "query20",
+            "tag": "query20",
             "patterns": [
                 "What are the signs of a diabetic emergency?",
                 "Signs of diabetic emergency?",
@@ -329,7 +329,7 @@
             ]
         },
         {
-            "name": "query21",
+            "tag": "query21",
             "patterns": [
                 "Sprain first aid?",
                 "What should I do if someone has a sprain?",
@@ -340,7 +340,7 @@
             ]
         },
         {
-            "name": "query22",
+            "tag": "query22",
             "patterns": [
                 "Signs of severe allergic reaction?",
                 "What are the signs of a severe allergic reaction?",
@@ -351,7 +351,7 @@
             ]
         },
         {
-            "name": "query23",
+            "tag": "query23",
             "patterns": [
                 "Heat rash first aid?",
                 "Help for heat rash?",
@@ -362,7 +362,7 @@
             ]
         },
         {
-            "name": "query24",
+            "tag": "query24",
             "patterns": [
                 "Seizure symptoms?",
                 "What are the signs of a seizure?",
@@ -373,7 +373,7 @@
             ]
         },
         {
-            "name": "query25",
+            "tag": "query25",
             "patterns": [
                 "What should I do if someone has an eye injury?",
                 "Eye injury first aid?",
@@ -384,7 +384,7 @@
             ]
         },
         {
-            "name": "query26",
+            "tag": "query26",
             "patterns": [
                 "What causes high cholesterol?",
                 "Reasons for high cholesterol?",
@@ -395,7 +395,7 @@
             ]
         },
         {
-            "name": "query27",
+            "tag": "query27",
             "patterns": [
                 "Help for concussion?",
                 "What should I do if someone has a concussion?",
@@ -406,7 +406,7 @@
             ]
         },
         {
-            "name": "query28",
+            "tag": "query28",
             "patterns": [
                 "What are the signs of a spider bite?",
                 "Spider bite symptoms?",
@@ -417,7 +417,7 @@
             ]
         },
         {
-            "name": "query29",
+            "tag": "query29",
             "patterns": [
                 "How can I prevent osteoporosis?",
                 "Ways to prevent osteoporosis?",
@@ -428,7 +428,7 @@
             ]
         },
         {
-            "name": "query30",
+            "tag": "query30",
             "patterns": [
                 "How to treat acid reflux?",
                 "Best remedies for acid reflux?",
@@ -439,7 +439,7 @@
             ]
         },
         {
-            "name": "query31",
+            "tag": "query31",
             "patterns": [
                 "What are the symptoms of anemia?",
                 "Signs of anemia?",
@@ -450,7 +450,7 @@
             ]
         },
         {
-            "name": "query32",
+            "tag": "query32",
             "patterns": [
                 "How to treat bronchitis?",
                 "Bronchitis treatment?",
@@ -461,7 +461,7 @@
             ]
         },
         {
-            "name": "query33",
+            "tag": "query33",
             "patterns": [
                 "What are the symptoms of diabetes?",
                 "Signs of diabetes?",
@@ -472,7 +472,7 @@
             ]
         },
         {
-            "name": "query34",
+            "tag": "query34",
             "patterns": [
                 "How to relieve a migraine?",
                 "Migraine relief tips?",
@@ -483,7 +483,7 @@
             ]
         },
         {
-            "name": "query35",
+            "tag": "query35",
             "patterns": [
                 "How to treat a pinched nerve?",
                 "Pinched nerve treatment?",
@@ -494,7 +494,7 @@
             ]
         },
         {
-            "name": "query36",
+            "tag": "query36",
             "patterns": [
                 "How to treat strep throat?",
                 "Strep throat treatment?",
@@ -505,7 +505,7 @@
             ]
         },
         {
-            "name": "query37",
+            "tag": "query37",
             "patterns": [
                 "What are the symptoms of asthma?",
                 "Signs of asthma?",
@@ -516,7 +516,7 @@
             ]
         },
         {
-            "name": "query38",
+            "tag": "query38",
             "patterns": [
                 "How to treat dehydration?",
                 "Dehydration treatment?",
@@ -527,7 +527,7 @@
             ]
         },
         {
-            "name": "query39",
+            "tag": "query39",
             "patterns": [
                 "What are the symptoms of appendicitis?",
                 "Signs of appendicitis?",
@@ -538,7 +538,7 @@
             ]
         },
         {
-            "name": "query40",
+            "tag": "query40",
             "patterns": [
                 "How to treat a cold?",
                 "Cold treatment?",
@@ -549,7 +549,7 @@
             ]
         },
         {
-            "name": "query41",
+            "tag": "query41",
             "patterns": [
                 "What are the symptoms of a UTI?",
                 "Signs of a UTI?",
@@ -560,7 +560,7 @@
             ]
         },
         {
-            "name": "query42",
+            "tag": "query42",
             "patterns": [
                 "How to treat insomnia?",
                 "Insomnia treatment?",
@@ -571,7 +571,7 @@
             ]
         },
         {
-            "name": "query43",
+            "tag": "query43",
             "patterns": [
                 "What are the symptoms of allergies?",
                 "Signs of allergies?",
@@ -582,7 +582,7 @@
             ]
         },
         {
-            "name": "query44",
+            "tag": "query44",
             "patterns": [
                 "How to treat diarrhea?",
                 "Diarrhea treatment?",
@@ -593,7 +593,7 @@
             ]
         },
         {
-            "name": "query45",
+            "tag": "query45",
             "patterns": [
                 "What are the symptoms of the flu?",
                 "Signs of the flu?",
@@ -604,7 +604,7 @@
             ]
         },
         {
-            "name": "query46",
+            "tag": "query46",
             "patterns": [
                 "How to treat a headache?",
                 "Headache treatment?",
@@ -615,7 +615,7 @@
             ]
         },
         {
-            "name": "query47",
+            "tag": "query47",
             "patterns": [
                 "What are the symptoms of hypertension?",
                 "Signs of hypertension?",
@@ -626,7 +626,7 @@
             ]
         },
         {
-            "name": "query48",
+            "tag": "query48",
             "patterns": [
                 "How to treat rosacea?",
                 "Rosacea treatment?",
@@ -637,7 +637,7 @@
             ]
         },
         {
-            "name": "query49",
+            "tag": "query49",
             "patterns": [
                 "What are the symptoms of COVID-19?",
                 "Signs of COVID-19?",
@@ -648,7 +648,7 @@
             ]
         },
         {
-            "name": "query50",
+            "tag": "query50",
             "patterns": [
                 "How to treat indigestion?",
                 "Indigestion treatment?",
@@ -659,7 +659,7 @@
             ]
         },
         {
-            "name": "query51",
+            "tag": "query51",
             "patterns": [
                 "How to treat a blister?",
                 "Blister treatment?",
@@ -670,7 +670,7 @@
             ]
         },
         {
-            "name": "query52",
+            "tag": "query52",
             "patterns": [
                 "What are the symptoms of anxiety?",
                 "Signs of anxiety?",
@@ -681,7 +681,7 @@
             ]
         },
         {
-            "name": "query53",
+            "tag": "query53",
             "patterns": [
                 "How to treat a cold sore?",
                 "Cold sore treatment?",
@@ -692,7 +692,7 @@
             ]
         },
         {
-            "name": "query54",
+            "tag": "query54",
             "patterns": [
                 "What are the symptoms of depression?",
                 "Signs of depression?",
@@ -703,7 +703,7 @@
             ]
         },
         {
-            "name": "query55",
+            "tag": "query55",
             "patterns": [
                 "How to treat a rash?",
                 "Rash treatment?",
@@ -714,7 +714,7 @@
             ]
         },
         {
-            "name": "query56",
+            "tag": "query56",
             "patterns": [
                 "What are the symptoms of an ear-infection?",
                 "Signs of an ear-infection?",
@@ -725,7 +725,7 @@
             ]
         },
         {
-            "name": "query57",
+            "tag": "query57",
             "patterns": [
                 "How to treat food poisoning?",
                 "Food poisoning treatment?",
@@ -736,7 +736,7 @@
             ]
         },
         {
-            "name": "query58",
+            "tag": "query58",
             "patterns": [
                 "What are the symptoms of meningitis?",
                 "Signs of meningitis?",
@@ -747,7 +747,7 @@
             ]
         },
         {
-            "name": "query59",
+            "tag": "query59",
             "patterns": [
                 "How to treat motion sickness?",
                 "Motion sickness treatment?",
@@ -758,7 +758,7 @@
             ]
         },
         {
-            "name": "query60",
+            "tag": "query60",
             "patterns": [
                 "What are the symptoms of pneumonia?",
                 "Signs of pneumonia?",
@@ -769,7 +769,7 @@
             ]
         },
         {
-            "name": "query61",
+            "tag": "query61",
             "patterns": [
                 "How to treat ringworm?",
                 "Ringworm treatment?",
@@ -780,7 +780,7 @@
             ]
         },
         {
-            "name": "query62",
+            "tag": "query62",
             "patterns": [
                 "What are the symptoms of a panic attack?",
                 "Signs of a panic attack?",
@@ -791,7 +791,7 @@
             ]
         },
         {
-            "name": "query63",
+            "tag": "query63",
             "patterns": [
                 "How to treat scabies?",
                 "Scabies treatment?",
@@ -802,7 +802,7 @@
             ]
         },
         {
-            "name": "query64",
+            "tag": "query64",
             "patterns": [
                 "What are the symptoms of measles?",
                 "Signs of measles?",
@@ -813,7 +813,7 @@
             ]
         },
         {
-            "name": "query65",
+            "tag": "query65",
             "patterns": [
                 "How to treat sunburn?",
                 "Sunburn treatment?",
@@ -824,7 +824,7 @@
             ]
         },
         {
-            "name": "query66",
+            "tag": "query66",
             "patterns": [
                 "What are the symptoms of chickenpox?",
                 "Signs of chickenpox?",
@@ -835,7 +835,7 @@
             ]
         },
         {
-            "name": "query67",
+            "tag": "query67",
             "patterns": [
                 "How to treat a sinus-infection?",
                 "Sinus-infection treatment?",
@@ -846,7 +846,7 @@
             ]
         },
         {
-            "name": "query68",
+            "tag": "query68",
             "patterns": [
                 "What are the symptoms of the common cold?",
                 "Signs of the common cold?",
@@ -857,7 +857,7 @@
             ]
         },
         {
-            "name": "query69",
+            "tag": "query69",
             "patterns": [
                 "How to treat an ingrown toenail?",
                 "Ingrown toenail treatment?",
@@ -868,7 +868,7 @@
             ]
         },
         {
-            "name": "query70",
+            "tag": "query70",
             "patterns": [
                 "What are the symptoms of RSV?",
                 "Signs of RSV?",
@@ -879,7 +879,7 @@
             ]
         },
         {
-            "name": "query71",
+            "tag": "query71",
             "patterns": [
                 "How to treat a toothache?",
                 "Toothache treatment?",
@@ -890,7 +890,7 @@
             ]
         },
         {
-            "name": "query72",
+            "tag": "query72",
             "patterns": [
                 "What are the symptoms of jaundice?",
                 "Signs of jaundice?",
@@ -901,7 +901,7 @@
             ]
         },
         {
-            "name": "query73",
+            "tag": "query73",
             "patterns": [
                 "How to treat a yeast-infection?",
                 "Yeast-infection treatment?",
@@ -912,7 +912,7 @@
             ]
         },
         {
-            "name": "query74",
+            "tag": "query74",
             "patterns": [
                 "What are the symptoms of Lyme-disease?",
                 "Signs of Lyme-disease?",
@@ -923,7 +923,7 @@
             ]
         },
         {
-            "name": "query75",
+            "tag": "query75",
             "patterns": [
                 "What are the symptoms of a kidney stone?",
                 "Signs of a kidney stone?",
@@ -934,7 +934,7 @@
             ]
         },
         {
-            "name": "query76",
+            "tag": "query76",
             "patterns": [
                 "How can I lower high blood pressure?",
                 "Ways to reduce blood pressure?",
@@ -945,7 +945,7 @@
             ]
         },
         {
-            "name": "query77",
+            "tag": "query77",
             "patterns": [
                 "How to treat a sprained wrist?",
                 "Sprained wrist treatment?",
@@ -956,7 +956,7 @@
             ]
         },
         {
-            "name": "query78",
+            "tag": "query78",
             "patterns": [
                 "What are the symptoms of gastroenteritis?",
                 "Signs of gastroenteritis?",
@@ -967,7 +967,7 @@
             ]
         },
         {
-            "name": "query79",
+            "tag": "query79",
             "patterns": [
                 "What are the symptoms of hepatitis B?",
                 "Signs of hepatitis B?",
@@ -978,7 +978,7 @@
             ]
         },
         {
-            "name": "query80",
+            "tag": "query80",
             "patterns": [
                 "How to treat a black-eye?",
                 "Black-eye treatment?",
@@ -989,7 +989,7 @@
             ]
         },
         {
-            "name": "query81",
+            "tag": "query81",
             "patterns": [
                 "What are the symptoms of gout?",
                 "Signs of gout?",
@@ -1000,7 +1000,7 @@
             ]
         },
         {
-            "name": "query82",
+            "tag": "query82",
             "patterns": [
                 "How to treat pink-eye?",
                 "Pink-seye treatment?",
@@ -1011,7 +1011,7 @@
             ]
         },
         {
-            "name": "query83",
+            "tag": "query83",
             "patterns": [
                 "What are the symptoms of mononucleosis?",
                 "Signs of mononucleosis?",
@@ -1022,7 +1022,7 @@
             ]
         },
         {
-            "name": "query84",
+            "tag": "query84",
             "patterns": [
                 "How to treat a stomach ache?",
                 "Stomach ache treatment?",
@@ -1033,7 +1033,7 @@
             ]
         },
         {
-            "name": "query85",
+            "tag": "query85",
             "patterns": [
                 "How to treat a swollen ankle?",
                 "Swollen ankle treatment?",
@@ -1044,7 +1044,7 @@
             ]
         },
         {
-            "name": "query86",
+            "tag": "query86",
             "patterns": [
                 "What are the symptoms of hyperthyroidism?",
                 "Signs of hyperthyroidism?",
@@ -1055,7 +1055,7 @@
             ]
         },
         {
-            "name": "query87",
+            "tag": "query87",
             "patterns": [
                 "How to treat lice?",
                 "Lice treatment?",
@@ -1066,7 +1066,7 @@
             ]
         },
         {
-            "name": "query88",
+            "tag": "query88",
             "patterns": [
                 "What are the symptoms of hypothyroidism?",
                 "Signs of hypothyroidism?",
@@ -1077,7 +1077,7 @@
             ]
         },
         {
-            "name": "query89",
+            "tag": "query89",
             "patterns": [
                 "What are the symptoms of an ectopic pregnancy?",
                 "Signs of an ectopic pregnancy?",
@@ -1088,7 +1088,7 @@
             ]
         },
         {
-            "name": "query90",
+            "tag": "query90",
             "patterns": [
                 "What are the symptoms of MRSA?",
                 "Signs of MRSA?",
@@ -1099,7 +1099,7 @@
             ]
         },
         {
-            "name": "query91",
+            "tag": "query91",
             "patterns": [
                 "How to treat a sore throat?",
                 "Sore throat treatment?",
@@ -1110,7 +1110,7 @@
             ]
         },
         {
-            "name": "query92",
+            "tag": "query92",
             "patterns": [
                 "What are the symptoms of tuberculosis?",
                 "Signs of tuberculosis?",
@@ -1121,7 +1121,7 @@
             ]
         },
         {
-            "name": "query93",
+            "tag": "query93",
             "patterns": [
                 "How to treat eczema?",
                 "Eczema treatment?",
@@ -1132,7 +1132,7 @@
             ]
         },
         {
-            "name": "query94",
+            "tag": "query94",
             "patterns": [
                 "What are the symptoms of lupus?",
                 "Signs of lupus?",
@@ -1143,7 +1143,7 @@
             ]
         },
         {
-            "name": "query95",
+            "tag": "query95",
             "patterns": [
                 "How to treat sciatica?",
                 "Sciatica treatment?",
@@ -1154,7 +1154,7 @@
             ]
         },
         {
-            "name": "query96",
+            "tag": "query96",
             "patterns": [
                 "What are the symptoms of GERD?",
                 "Signs of GERD?",
@@ -1165,7 +1165,7 @@
             ]
         },
         {
-            "name": "query97",
+            "tag": "query97",
             "patterns": [
                 "What are the symptoms of bipolar disorder?",
                 "Signs of bipolar disorder?",
@@ -1176,7 +1176,7 @@
             ]
         },
         {
-            "name": "query98",
+            "tag": "query98",
             "patterns": [
                 "How to treat hemorrhoids?",
                 "Hemorrhoid treatment?",
@@ -1187,7 +1187,7 @@
             ]
         },
         {
-            "name": "query99",
+            "tag": "query99",
             "patterns": [
                 "What are the symptoms of ADHD?",
                 "Signs of ADHD?",
@@ -1198,7 +1198,7 @@
             ]
         },
         {
-            "name": "query100",
+            "tag": "query100",
             "patterns": [
                 "How to treat psoriasis?",
                 "Psoriasis treatment?",
@@ -1209,7 +1209,7 @@
             ]
         },
         {
-            "name": "query101",
+            "tag": "query101",
             "patterns": [
                 "How to treat acne?",
                 "Acne treatment?",
@@ -1220,7 +1220,7 @@
             ]
         },
         {
-            "name": "query102",
+            "tag": "query102",
             "patterns": [
                 "What are the symptoms of Celiac-disease?",
                 "Signs of Celiac-disease?",
@@ -1231,7 +1231,7 @@
             ]
         },
         {
-            "name": "query103",
+            "tag": "query103",
             "patterns": [
                 "What are the symptoms of a urinary tract-infection?",
                 "Signs of a urinary tract-infection?",
@@ -1242,7 +1242,7 @@
             ]
         },
         {
-            "name": "query104",
+            "tag": "query104",
             "patterns": [
                 "What are the symptoms of Parkinson's-disease?",
                 "Signs of Parkinson's-disease?",
@@ -1253,7 +1253,7 @@
             ]
         },
         {
-            "name": "query105",
+            "tag": "query105",
             "patterns": [
                 "How to treat athlete's foot?",
                 "Athlete's foot treatment?",
@@ -1264,7 +1264,7 @@
             ]
         },
         {
-            "name": "query106",
+            "tag": "query106",
             "patterns": [
                 "What are the symptoms of a blood clot?",
                 "Signs of a blood clot?",
@@ -1275,7 +1275,7 @@
             ]
         },
         {
-            "name": "query107",
+            "tag": "query107",
             "patterns": [
                 "How to treat an ulcer?",
                 "Ulcer treatment?",
@@ -1286,7 +1286,7 @@
             ]
         },
         {
-            "name": "query108",
+            "tag": "query108",
             "patterns": [
                 "How to treat a pulled muscle?",
                 "Pulled muscle treatment?",

@@ -11,18 +11,35 @@ from nltk.stem import WordNetLemmatizer
 # Ensure that NLTK punkt data is downloaded
 nltk.download('punkt')
 
-# Set up paths to your data folder
-data_folder = os.path.join(os.getcwd(), 'loginRegister', 'data')
+# Set up paths to your data folder dynamically
+project_root = os.path.dirname(os.path.abspath(__file__))
+data_folder = os.path.join(project_root, 'data')
 
-# Check if data folder exists
+# Ensure the data folder exists, create it if not
 if not os.path.exists(data_folder):
-    raise FileNotFoundError(f"Data folder not found: {data_folder}")
+    os.makedirs(data_folder)
+    print(f"Data folder not found. Created an empty folder: {data_folder}")
+    raise FileNotFoundError(f"Please add the required files to the data folder: {data_folder}")
 
 # File paths
 intents_file = os.path.join(data_folder, 'intents.json')
 words_file = os.path.join(data_folder, 'words.pkl')
 classes_file = os.path.join(data_folder, 'classes.pkl')
 model_file = os.path.join(data_folder, 'chatbot_model.h5')
+
+# Validate the existence of required files
+missing_files = []
+if not os.path.exists(intents_file):
+    missing_files.append('intents.json')
+if not os.path.exists(words_file):
+    missing_files.append('words.pkl')
+if not os.path.exists(classes_file):
+    missing_files.append('classes.pkl')
+if not os.path.exists(model_file):
+    missing_files.append('chatbot_model.h5')
+
+if missing_files:
+    raise FileNotFoundError(f"The following required files are missing in the data folder: {', '.join(missing_files)}")
 
 # Load the files
 try:

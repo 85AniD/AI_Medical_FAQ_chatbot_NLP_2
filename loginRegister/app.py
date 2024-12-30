@@ -3,7 +3,7 @@ import os
 
 # Add the path to the loginRegister folder explicitly
 sys.path.append(os.path.join(os.getcwd(), 'loginRegister'))
-sys.path.append(os.path.join(os.getcwd(), 'db'))
+sys.path.append(os.path.join(os.getcwd(), 'db'))  # Ensure 'db' is in the path
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
 from processor import chatbot_response  # assuming processor.py is in the same folder
@@ -145,12 +145,12 @@ def register():
 def chatbot():
     data = request.get_json()
     message = data.get("message", "")
-
     if not message:
         return jsonify({"error": "Message is required"}), 400
 
-    response = chatbot_response(message)
+    response = chatbot_response(message)  # Ensure chatbot_response() works as expected
     return jsonify({"response": response})
+
 
 # Route: Admin Dashboard
 @app.route('/admin/dashboard')
@@ -160,6 +160,7 @@ def admin_dashboard():
         flash("Access denied.", "danger")
         return redirect(url_for('index'))
     return render_template('admin_dashboard.html')
+
 '''
 # Fetch users endpoint
 @app.route('/users', methods=['GET'])
