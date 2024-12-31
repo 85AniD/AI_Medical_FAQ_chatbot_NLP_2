@@ -32,6 +32,8 @@ CORS(app)  # Allow cross-origin requests for frontend integration
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 
 Session(app)
 
@@ -45,16 +47,14 @@ def get_db_connection():
     )
 
 # Decorator for checking login
-# Updated loggedin decorator
 def loggedin(func):
-    @wraps(func)  # This preserves the original function name and avoids conflicts
+    @wraps(func)
     def secure_function(*args, **kwargs):
         if not session.get("email"):
             flash("Please log in to access this page.", "warning")
             return redirect(url_for('login'))
         return func(*args, **kwargs)
     return secure_function
-
 
 # Route: Login
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,9 +76,11 @@ def login():
 
             if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
                 session['email'] = email
-                session['role'] = user['role']
+                session['role'] = user['role']  # Ensure this matches the database role column
                 flash("Login successful!", "success")
-                return redirect(url_for('index'))
+                if user['role'] == 'admin':  # Check if the role is admin
+                    return redirect(url_for('admin_dashboard'))  # Redirect to admin_dashboard
+                return redirect(url_for('index'))  # Redirect to user index
 
             flash("Invalid email or password!", "danger")
 
@@ -93,11 +95,12 @@ def login():
     return render_template('login.html')
 
 # Route: Logout
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
-    session.clear()
+    session.clear()  # Clear session data
     flash("You have been logged out.", "success")
-    return redirect(url_for('login'))
+    return redirect(url_for('login'))  # Redirect to login page
+
 
 # Route: Index (Home Page After Login)
 @app.route('/', methods=['GET', 'POST'])
@@ -123,8 +126,13 @@ def register():
 
             conn = get_db_connection()
             cursor = conn.cursor()
-            query = "INSERT INTO users (username, email, password, role) VALUES (%s, %s, %s, %s)"
-            cursor.execute(query, (name, email, hashed_password, role))
+
+            if role == 'admin':
+                query = "INSERT INTO admins (username, email, password) VALUES (%s, %s, %s)"
+            else:
+                query = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
+
+            cursor.execute(query, (name, email, hashed_password))
             conn.commit()
 
             flash("Registration successful! Please log in.", "success")
@@ -140,6 +148,32 @@ def register():
 
     return render_template('register.html')
 
+# Route: Admin Dashboard
+@app.route('/admin/dashboard', methods=['GET'])
+@loggedin
+def admin_dashboard():
+    if session.get('role') != 'admin':
+        flash("Access denied.", "danger")
+        return redirect(url_for('index'))
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT id, username, email FROM users"
+        cursor.execute(query)
+        users = cursor.fetchall()
+        print(users)  # Debug: Check if user data is fetched
+    except mysql.connector.Error as e:
+        logger.error(f"Database error while fetching users: {e}")
+        flash("An error occurred while fetching user data.", "danger")
+        users = []
+    finally:
+        cursor.close()
+        conn.close()
+
+    return render_template('admin_dashboard.html', users=users)
+
+
 # Route: Chatbot Endpoint
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
@@ -151,62 +185,6 @@ def chatbot():
     response = chatbot_response(message)  # Ensure chatbot_response() works as expected
     return jsonify({"response": response})
 
-
-# Route: Admin Dashboard
-@app.route('/admin/dashboard')
-@loggedin
-def admin_dashboard():
-    if session.get('role') != 'admin':
-        flash("Access denied.", "danger")
-        return redirect(url_for('index'))
-    return render_template('admin_dashboard.html')
-
-'''
-# Fetch users endpoint
-@app.route('/users', methods=['GET'])
-def get_users():
-    """Fetch all registered users."""
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    try:
-        query = "SELECT id, username, email, created_at FROM users"
-        cursor.execute(query)
-        users = cursor.fetchall()  # Make sure to fetch all results
-    finally:
-        cursor.close()
-        conn.close()
-    return jsonify(users)
-
-
-# Fetch FAQs endpoint
-@app.route('/faqs', methods=['GET'])
-def get_faqs():
-    """Fetch all FAQs."""
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    try:
-        query = "SELECT id, question, answer, created_at FROM faqs"
-        cursor.execute(query)
-        faqs = cursor.fetchall()  # Make sure to fetch all results
-    finally:
-        cursor.close()
-        conn.close()
-    return jsonify(faqs)
-
-
-# Add a new FAQ endpoint
-@app.route('/faqs', methods=['POST'])
-def add_faq():
-    """Add a new FAQ."""
-    faq = request.get_json()
-    question = faq.get("question")
-    answer = faq.get("answer")
-    if not question or not answer:
-        return jsonify({"error": "Question and answer are required"}), 400
-    query = "INSERT INTO faqs (question, answer) VALUES (%s, %s)"
-    execute_query(query, (question, answer))
-    return jsonify({"message": "FAQ added successfully!"})
-'''
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
