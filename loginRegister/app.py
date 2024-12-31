@@ -2,12 +2,11 @@ import sys
 import os
 
 # Add the path to the loginRegister folder explicitly
-sys.path.append(os.path.join(os.getcwd(), 'loginRegister'))
-sys.path.append(os.path.join(os.getcwd(), 'db'))  # Ensure 'db' is in the path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
-from processor import chatbot_response  # assuming processor.py is in the same folder
-from db.database import execute_query
+from loginRegister.processor import chatbot_response  # Adjusted import
+from db.database import execute_query  # Adjusted import
 
 from flask_session import Session
 from loginRegister.utils import hash_password
@@ -34,15 +33,14 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-
 Session(app)
 
 # Database connection function
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",  # Update with your DB host
-        user="root",       # Update with your DB user
-        password="Qaz_123",  # Update with your DB password
+        host="localhost",
+        user="root",
+        password="Qaz_123",
         database="medical_faq_chatbot"
     )
 
