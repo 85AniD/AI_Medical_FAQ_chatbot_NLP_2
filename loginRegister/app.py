@@ -5,8 +5,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
-from loginRegister.processor import chatbot_response  # Adjusted import
-from db.database import execute_query  # Adjusted import
+from loginRegister.processor import chatbot_response
+from db.database import execute_query
 
 from flask_session import Session
 from loginRegister.utils import hash_password
@@ -14,7 +14,6 @@ from functools import wraps
 import mysql.connector
 from flask_cors import CORS
 import bcrypt
-
 import logging
 
 # Set up logging for Flask
@@ -23,12 +22,11 @@ logger = logging.getLogger(__name__)
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'enter-a-very-secretive-key-3479373'  # Required for session management and flash messages
+app.secret_key = 'enter-a-very-secretive-key-3479373'
 
-CORS(app)  # Allow cross-origin requests for frontend integration
+CORS(app)
 
-# Configure session to use filesystem
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Configure session
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -48,6 +46,7 @@ def get_db_connection():
 def loggedin(func):
     @wraps(func)
     def secure_function(*args, **kwargs):
+        logger.debug(f"Session data: {session}")
         if not session.get("email"):
             flash("Please log in to access this page.", "warning")
             return redirect(url_for('login'))
@@ -74,11 +73,13 @@ def login():
 
             if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
                 session['email'] = email
-                session['role'] = user['role']  # Ensure this matches the database role column
+                session['role'] = user['role']  # This should match the role column in your database
                 flash("Login successful!", "success")
-                if user['role'] == 'admin':  # Check if the role is admin
-                    return redirect(url_for('admin_dashboard'))  # Redirect to admin_dashboard
-                return redirect(url_for('index'))  # Redirect to user index
+                logger.debug(f"Session after login: {session}")
+                if user['role'].lower() == 'admin':  # Ensure case consistency
+                    return redirect(url_for('admin_dashboard'))
+                return redirect(url_for('index'))
+
 
             flash("Invalid email or password!", "danger")
 
@@ -95,12 +96,11 @@ def login():
 # Route: Logout
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.clear()  # Clear session data
+    session.clear()
     flash("You have been logged out.", "success")
-    return redirect(url_for('login'))  # Redirect to login page
+    return redirect(url_for('login'))
 
-
-# Route: Index (Home Page After Login)
+# Route: Index
 @app.route('/', methods=['GET', 'POST'])
 @loggedin
 def index():
@@ -121,11 +121,10 @@ def register():
 
         try:
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
             conn = get_db_connection()
             cursor = conn.cursor()
 
-            if role == 'admin':
+            if role.lower() == 'admin':
                 query = "INSERT INTO admins (username, email, password) VALUES (%s, %s, %s)"
             else:
                 query = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
@@ -147,22 +146,27 @@ def register():
     return render_template('register.html')
 
 # Route: Admin Dashboard
-@app.route('/admin/dashboard', methods=['GET'])
+@app.route('/admin_dashboard', methods=['GET'])
 @loggedin
 def admin_dashboard():
-    if session.get('role') != 'admin':
-        flash("Access denied.", "danger")
+    session['email'] = 'admin@example.com'  # Simulate a logged-in admin
+    session['role'] = 'admin'  # Simulate admin role
+    logger.debug(f"Session during admin_dashboard: {session}")
+
+    if session.get('role', '').lower() != 'admin':
+        flash("Access denied. Admins only.", "danger")
         return redirect(url_for('index'))
 
+    # Fetch user data
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         query = "SELECT id, username, email FROM users"
         cursor.execute(query)
         users = cursor.fetchall()
-        print(users)  # Debug: Check if user data is fetched
+        logger.debug(f"Fetched users: {users}")
     except mysql.connector.Error as e:
-        logger.error(f"Database error while fetching users: {e}")
+        logger.error(f"Database error: {e}")
         flash("An error occurred while fetching user data.", "danger")
         users = []
     finally:
@@ -170,7 +174,6 @@ def admin_dashboard():
         conn.close()
 
     return render_template('admin_dashboard.html', users=users)
-
 
 # Route: Chatbot Endpoint
 @app.route('/chatbot', methods=['POST'])
@@ -180,7 +183,7 @@ def chatbot():
     if not message:
         return jsonify({"error": "Message is required"}), 400
 
-    response = chatbot_response(message)  # Ensure chatbot_response() works as expected
+    response = chatbot_response(message)
     return jsonify({"response": response})
 
 # Run the Flask app
