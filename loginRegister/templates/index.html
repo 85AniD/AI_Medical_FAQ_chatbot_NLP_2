@@ -104,16 +104,18 @@
                     type: "POST",
                     url: "/chatbot",
                     contentType: "application/json",
-                    data: JSON.stringify({ question }),
+                    data: JSON.stringify({ message: question }), // Ensure "message" key matches backend
                     success: function (result) {
                         appendMessage("Me", question);
-                        appendMessage("AIbot", result.response);
+                        appendMessage("AIbot", result.response); // Expect "response" key from backend
                         $("#question").val("");
                     },
-                    error: function () {
+                    error: function (xhr, status, error) {
+                        console.error("Error details:", status, error);
                         appendMessage("AIbot", "Sorry, something went wrong. Please try again.");
                     }
                 });
+                
             }
 
             function appendMessage(sender, message) {

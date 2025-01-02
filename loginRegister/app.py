@@ -135,11 +135,10 @@ def register():
 
         try:
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
             conn = get_db_connection()
             cursor = conn.cursor()
 
-            if role == 'admin':
+            if role.lower() == 'admin':
                 query = "INSERT INTO admins (username, email, password) VALUES (%s, %s, %s)"
             else:
                 query = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
