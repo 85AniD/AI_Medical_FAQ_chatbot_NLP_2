@@ -1,4 +1,9 @@
+import sys
 import os
+
+# Add the project root directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import json
 import random
 import pickle
@@ -7,6 +12,14 @@ import nltk
 from keras.models import load_model
 import numpy as np
 from nltk.stem import WordNetLemmatizer
+from loginRegister.utils import encrypt_data, decrypt_data  # New entry for encryption utilities
+from loginRegister.utils import encrypt_data, decrypt_data  # Adjusted for proper module path
+
+# Encrypt user query example
+encrypted_query = encrypt_data("What is diabetes?")
+print("Encrypted Query:", encrypted_query)
+decrypted_query = decrypt_data(encrypted_query)
+print("Decrypted Query:", decrypted_query)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -14,7 +27,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 # Ensure NLTK data is downloaded
 nltk.download('punkt')
 
-# Set up paths to your data folder dynamically
+# Dynamic project paths
 project_root = os.path.dirname(os.path.abspath(__file__))
 data_folder = os.path.join(project_root, 'data')
 
@@ -24,13 +37,13 @@ if not os.path.exists(data_folder):
     logging.error(f"Data folder not found. Created an empty folder: {data_folder}")
     raise FileNotFoundError(f"Please add the required files to the data folder: {data_folder}")
 
-# File paths
+# File paths for required assets
 intents_file = os.path.join(data_folder, 'intents.json')
 words_file = os.path.join(data_folder, 'words.pkl')
 classes_file = os.path.join(data_folder, 'classes.pkl')
 model_file = os.path.join(data_folder, 'chatbot_model.h5')
 
-# Validate required files
+# Validate existence of required files
 missing_files = [f for f in [intents_file, words_file, classes_file, model_file] if not os.path.exists(f)]
 if missing_files:
     logging.error(f"Missing files: {', '.join(missing_files)}")
@@ -43,6 +56,7 @@ try:
     words = pickle.load(open(words_file, 'rb'))
     classes = pickle.load(open(classes_file, 'rb'))
     model = load_model(model_file)
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])  # Ensure model is compiled
     logging.info("All files loaded successfully.")
 except Exception as e:
     logging.error(f"Error loading files: {e}")
@@ -51,17 +65,17 @@ except Exception as e:
 # Initialize lemmatizer
 lemmatizer = WordNetLemmatizer()
 
-# Clean and tokenize a sentence
 def clean_up_sentence(sentence):
+    """Tokenizes and lemmatizes a given sentence."""
     try:
         sentence_words = nltk.word_tokenize(sentence)
         return [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
     except Exception as e:
-        logging.error(f"Error in sentence cleaning: {e}")
+        logging.error(f"Error cleaning sentence: {e}")
         raise
 
-# Convert sentence to bag of words
 def bow(sentence, words, show_details=False):
+    """Converts a sentence into a bag-of-words representation."""
     sentence_words = clean_up_sentence(sentence)
     bag = [0] * len(words)
     for s in sentence_words:
@@ -72,8 +86,8 @@ def bow(sentence, words, show_details=False):
                     logging.info(f"Found in bag: {w}")
     return np.array(bag)
 
-# Predict the class of a sentence
 def predict_class(sentence, model):
+    """Predicts the intent of a sentence using the model."""
     try:
         p = bow(sentence, words)
         res = model.predict(np.array([p]))[0]
@@ -82,11 +96,11 @@ def predict_class(sentence, model):
         results.sort(key=lambda x: x[1], reverse=True)
         return [{"intent": classes[r[0]], "probability": str(r[1])} for r in results]
     except Exception as e:
-        logging.error(f"Error during prediction: {e}")
+        logging.error(f"Error predicting class: {e}")
         return []
 
-# Get response based on intent
 def get_response(ints, intents_json):
+    """Returns a response based on the predicted intent."""
     if not ints:
         return "Sorry, I don't understand that."
     tag = ints[0]['intent']
@@ -95,13 +109,14 @@ def get_response(ints, intents_json):
             return random.choice(intent['responses'])
     return "You must ask the right questions."
 
-# Generate chatbot response
 def chatbot_response(msg):
+    """Generates a response for the given message."""
     ints = predict_class(msg, model)
     return get_response(ints, intents)
 
-# Register a user in the database
+# Example function for user registration
 def register(userinfo):
+    """Registers a new user into the database."""
     try:
         query = """
         INSERT INTO users (username, email, password)
