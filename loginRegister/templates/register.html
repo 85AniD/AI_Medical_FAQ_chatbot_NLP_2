@@ -1,83 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <style>
-        body {
-            background: url('https://mcdn.wallpapersafari.com/medium/99/64/on9s8c.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #343a40;
-            font-family: Arial, sans-serif;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="static/css/styles.css">
+  <script>
+    // Handle JSON-based registration submission
+    async function handleRegister(event) {
+      event.preventDefault(); // Prevent default form submission
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const role = document.getElementById('role').value;
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match. Please try again.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password, role }),
+        });
+
+        if (response.ok) {
+          alert('Registration successful! Redirecting to login...');
+          window.location.href = '/login'; // Redirect to login on success
+        } else {
+          const result = await response.json();
+          alert(result.error || 'Registration failed'); // Show error message
         }
-        h2 {
-            margin-top: 20px;
-            text-align: center;
-            color: #007bff;
-            font-weight: bold;
-        }
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 50px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-group label {
-            font-weight: bold;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            height: 30px;
-            line-height: 30px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-    </style>
+      } catch (error) {
+        console.error('Error during registration:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    }
+  </script>
 </head>
 <body>
-    <div class="container">
-        <h2>Register</h2>
-        <form action="/register" method="POST">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="role">Select Role:</label>
-                <select id="role" name="role" class="form-control" required>
-                    <option value="User">User</option>
-                    <option value="Admin">Admin</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-    <footer>
-        AI ChatBot &copy; 2024
-    </footer>
+  <div class="wrapper">
+    <h1>Register</h1>
+    <!-- Form with JavaScript handler for registration -->
+    <form action="/register" method="POST">
+      <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" class="form-control" required>
+      </div>
+      <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+      </div>
+      <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+      </div>
+      <div class="form-group">
+          <label for="confirm-password">Confirm Password:</label>
+          <input type="password" id="confirm-password" name="confirm-password" class="form-control" required>
+      </div>
+      <div class="form-group">
+          <label for="role">Select Role:</label>
+          <select id="role" name="role" class="form-control" required>
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+          </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Register</button>
+      <p>Go back to <a href="/login">Login</a> page</p>
+  </form>
+  
+  </div>
 </body>
 </html>
