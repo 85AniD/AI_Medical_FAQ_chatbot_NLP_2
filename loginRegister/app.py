@@ -16,6 +16,8 @@ from flask_talisman import Talisman
 from functools import wraps
 from loginRegister.processor import chatbot_response
 from loginRegister.utils import hash_password, encrypt_data, decrypt_data
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # Logging configuration
@@ -24,22 +26,24 @@ logger = logging.getLogger(__name__)
 
 # Flask application initialization
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))  # Secure key for production
+
+# Secret key and session configuration
+app.secret_key = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))
+if not os.getenv("FLASK_SECRET_KEY"):
+    logger.warning("Using a fallback FLASK_SECRET_KEY. Set a secure key in your environment!")
+
 app.session_cookie_name = "medical_faq_session"  # Unique session cookie name
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+
+# JWT Configuration
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))
+if not os.getenv("JWT_SECRET_KEY"):
+    logger.warning("Using a fallback JWT_SECRET_KEY. Set a secure key in your environment!")
 
 # Security and session configuration
 Talisman(app)
 CORS(app)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-
-# Use a generated secret key if the environment variable is not set
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))
-
-# Example: Output a warning if using a default value
-if app.config["JWT_SECRET_KEY"] == "YourJWTSecretKey":
-    print("Warning: Using default JWT_SECRET_KEY! This should only be used in development.")
-
 Session(app)
 jwt = JWTManager(app)
 
@@ -47,10 +51,10 @@ jwt = JWTManager(app)
 def get_db_connection():
     try:
         return mysql.connector.connect(
-            host="localhost",
-            user="root",
+            host=os.getenv("DB_HOST", "localhost"),
+            user=os.getenv("DB_USER", "root"),
             password=os.getenv("DB_PASSWORD", "Qaz_123"),
-            database="medical_faq_chatbot"
+            database=os.getenv("DB_NAME", "medical_faq_chatbot"),
         )
     except mysql.connector.Error as e:
         logger.error(f"Database connection error: {e}")
@@ -73,16 +77,16 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        logger.debug(f"Login attempt for email: {email}")
 
         if not email or not password:
+            logger.debug("Email or password missing.")
             flash("Email and password are required!", "danger")
-            logger.debug("Missing email or password")
             return render_template("login.html")
 
         try:
             conn = get_db_connection()
             cursor = conn.cursor(dictionary=True)
-
             query = """
                 SELECT 'user' AS role, username, email, password FROM users WHERE email = %s
                 UNION
@@ -90,31 +94,22 @@ def login():
             """
             cursor.execute(query, (email, email))
             user = cursor.fetchone()
+            logger.debug(f"User fetched: {user}")
 
-            if user:
-                logger.debug(f"User found: {user}")
-                # Validate password
-                if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-                    session.clear()
-                    session['email'] = user['email']
-                    session['role'] = user['role']
-                    session['username'] = user['username']
-                    logger.debug(f"Session set: {dict(session)}")
+            if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+                session.clear()
+                session.update({
+                    "email": user["email"],
+                    "role": user["role"],
+                    "username": user["username"],
+                })
+                flash("Login successful!", "success")
+                return redirect(url_for("admin_dashboard" if user["role"] == "admin" else "index"))
 
-                    flash("Login successful!", "success")
-
-                    if user['role'] == 'admin':
-                        return redirect(url_for("admin_dashboard"))
-                    else:
-                        return redirect(url_for("index"))
-                else:
-                    flash("Invalid password!", "danger")
-                    logger.debug("Password mismatch")
-            else:
-                flash("User not found!", "danger")
-                logger.debug("No user found with the given email")
+            logger.debug("Invalid credentials.")
+            flash("Invalid email or password!", "danger")
         except mysql.connector.Error as e:
-            logger.error(f"Database error during login: {e}")
+            logger.error(f"Database error: {e}")
             flash("An error occurred. Please try again.", "danger")
         finally:
             if cursor:
@@ -125,7 +120,7 @@ def login():
     return render_template("login.html")
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()  # Clear all session data
     flash("Logged out successfully!", "success")
@@ -213,11 +208,19 @@ def admin_dashboard():
 def chatbot():
     data = request.get_json()
     message = data.get("message", "")
+    logger.debug(f"Received message: {message}")
+
     if not message:
         return jsonify({"error": "Message is required"}), 400
 
-    response = chatbot_response(message)
-    return jsonify({"response": response})
+    try:
+        response = chatbot_response(message)
+        logger.debug(f"Chatbot response: {response}")
+        return jsonify({"response": response})
+    except Exception as e:
+        logger.error(f"Error generating chatbot response: {e}")
+        return jsonify({"error": "Failed to process the message."}), 500
+
 
 @app.route('/')
 @loggedin
