@@ -80,7 +80,6 @@ def login():
         logger.debug(f"Login attempt for email: {email}")
 
         if not email or not password:
-            logger.debug("Email or password missing.")
             flash("Email and password are required!", "danger")
             return render_template("login.html")
 
@@ -104,9 +103,9 @@ def login():
                     "username": user["username"],
                 })
                 flash("Login successful!", "success")
-                return redirect(url_for("admin_dashboard" if user["role"] == "admin" else "index"))
+                # Redirect to /index for users and /admin/dashboard for admins
+                return redirect(url_for("index" if user["role"] == "user" else "admin_dashboard"))
 
-            logger.debug("Invalid credentials.")
             flash("Invalid email or password!", "danger")
         except mysql.connector.Error as e:
             logger.error(f"Database error: {e}")
@@ -206,31 +205,45 @@ def admin_dashboard():
 
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
-    data = request.get_json()
-    message = data.get("message", "")
-    logger.debug(f"Received message: {message}")
-
-    if not message:
-        return jsonify({"error": "Message is required"}), 400
+    logger.debug("Chatbot route accessed.")
+    if 'email' not in session or session.get('role') != 'user':
+        logger.debug("Unauthorized access attempt to /chatbot.")
+        return jsonify({"error": "Unauthorized access"}), 403
 
     try:
-        response = chatbot_response(message)
+        data = request.get_json()
+        logger.debug(f"Received chatbot request: {data}")
+        message = data.get("message", "").strip()
+        if not message:
+            logger.debug("No message provided.")
+            return jsonify({"error": "Message is required"}), 400
+
+        # Simulate chatbot response for testing
+        response = chatbot_response(message)  # Replace with actual chatbot logic
         logger.debug(f"Chatbot response: {response}")
         return jsonify({"response": response})
     except Exception as e:
-        logger.error(f"Error generating chatbot response: {e}")
-        return jsonify({"error": "Failed to process the message."}), 500
+        logger.error(f"Error in chatbot route: {e}")
+        return jsonify({"error": "An error occurred while processing your request."}), 500
 
 
 @app.route('/')
+def root():
+    if session.get("role") == "user":
+        return redirect(url_for("index"))
+    elif session.get("role") == "admin":
+        return redirect(url_for("admin_dashboard"))
+    return redirect(url_for("login"))
+
+
+@app.route('/index', methods=["GET"])
 @loggedin
 def index():
-    logger.debug(f"Accessing index. Session: {dict(session)}")
+    logger.debug(f"Accessing /index. Session: {dict(session)}")
     if session.get('role') != 'user':
         flash("Access denied! Admins cannot access the user dashboard.", "danger")
         return redirect(url_for("login"))
     return render_template("index.html")
-
 
 @app.route('/debug_session')
 def debug_session():
