@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
     <title>AI Medical FAQ ChatBot</title>
     <link rel="stylesheet" href="/static/css/index_styles.css">
+    <!-- Load jQuery from CDN -->
+    <script src="/static/jquery/jquery3.7.1.js"></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -37,55 +40,54 @@
     <!-- Footer -->
     <footer>&copy; 2025 AI Medical ChatBot. All Rights Reserved.</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function () {
-        function sendQuery() {
-            const question = $("#question").val().trim();
-            if (!question) {
-                alert("Please enter a question.");
-                return;
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function () {
+            function sendQuery() {
+                const question = $("#question").val().trim();
+                if (!question) {
+                    alert("Please enter a question.");
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/chatbot",
+                    contentType: "application/json",
+                    data: JSON.stringify({ message: question }),
+                    success: function (result) {
+                        appendMessage("Me", question);
+                        appendMessage("AIbot", result.response);
+                        $("#question").val(""); // Clear the input field
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error details:", status, error, xhr.responseText);
+                        appendMessage("AIbot", "Sorry, something went wrong. Please try again.");
+                    }
+                });
             }
 
-            $.ajax({
-                type: "POST",
-                url: "/chatbot",
-                contentType: "application/json",
-                data: JSON.stringify({ message: question }),
-                success: function (result) {
-                    appendMessage("Me", question);
-                    appendMessage("AIbot", result.response);
-                    $("#question").val(""); // Clear the input field
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error details:", status, error, xhr.responseText);
-                    appendMessage("AIbot", "Sorry, something went wrong. Please try again.");
-                }
-            });
-        }
+            function appendMessage(sender, message) {
+                const messageHtml = `<p><strong>${sender}:</strong> ${message}</p>`;
+                $("#response").append(messageHtml);
+                $("#response").scrollTop($("#response")[0].scrollHeight);
+            }
 
-        function appendMessage(sender, message) {
-            const messageHtml = `<p><strong>${sender}:</strong> ${message}</p>`;
-            $("#response").append(messageHtml);
-            $("#response").scrollTop($("#response")[0].scrollHeight);
-        }
-
-        // Prevent default form submission
-        $("#chat-form").submit(function (e) {
-            e.preventDefault();
-            sendQuery();
-        });
-
-        // Handle Enter key press
-        $("#question").keypress(function (e) {
-            if (e.which === 13) {
+            // Prevent default form submission
+            $("#chat-form").submit(function (e) {
                 e.preventDefault();
                 sendQuery();
-            }
+            });
+
+            // Handle Enter key press
+            $("#question").keypress(function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    sendQuery();
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>

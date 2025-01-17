@@ -2,7 +2,6 @@ import os
 import sys
 # Add the project root directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-print(sys.path)
 
 import secrets
 import bcrypt
@@ -18,7 +17,6 @@ from loginRegister.processor import chatbot_response
 from loginRegister.utils import hash_password, encrypt_data, decrypt_data
 from dotenv import load_dotenv
 load_dotenv()
-
 
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
@@ -41,8 +39,13 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32)
 if not os.getenv("JWT_SECRET_KEY"):
     logger.warning("Using a fallback JWT_SECRET_KEY. Set a secure key in your environment!")
 
-# Security and session configuration
-Talisman(app)
+# Security and session configuration with Content Security Policy
+csp = {
+    'default-src': "'self'",
+    'script-src': "'self' 'unsafe-inline'",
+    'style-src': "'self' 'unsafe-inline'",
+}
+Talisman(app, content_security_policy=csp)
 CORS(app)
 Session(app)
 jwt = JWTManager(app)
@@ -70,6 +73,66 @@ def loggedin(func):
         return func(*args, **kwargs)
     return secure_function
 
+# Modify user
+@app.route('/admin/modify_user/<int:user_id>', methods=['POST'])
+@loggedin
+def modify_user(user_id):
+    if session.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    try:
+        data = request.get_json()
+        new_username = data.get("username")
+        new_email = data.get("email")
+        if not new_username or not new_email:
+            return jsonify({"error": "Username and email are required"}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        query = """
+            UPDATE users
+            SET username = %s, email = %s
+            WHERE id = %s
+        """
+        cursor.execute(query, (new_username, new_email, user_id))
+        conn.commit()
+
+        return jsonify({"message": "User updated successfully"})
+    except mysql.connector.Error as e:
+        logger.error(f"Error modifying user: {e}")
+        return jsonify({"error": "Failed to modify user"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+# Delete user
+@app.route('/admin/delete_user/<int:user_id>', methods=['DELETE'])
+@loggedin
+def delete_user(user_id):
+    if session.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        query = """
+            DELETE FROM users
+            WHERE id = %s
+        """
+        cursor.execute(query, (user_id,))
+        conn.commit()
+
+        return jsonify({"message": "User deleted successfully"})
+    except mysql.connector.Error as e:
+        logger.error(f"Error deleting user: {e}")
+        return jsonify({"error": "Failed to delete user"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 # Routes
 @app.route('/login', methods=['GET', 'POST'])
@@ -118,13 +181,11 @@ def login():
 
     return render_template("login.html")
 
-
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()  # Clear all session data
     flash("Logged out successfully!", "success")
     return redirect(url_for("login"))
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -176,7 +237,6 @@ def register():
 
     return render_template("register.html")
 
-
 @app.route('/admin/dashboard')
 @loggedin
 def admin_dashboard():
@@ -202,10 +262,9 @@ def admin_dashboard():
 
     return render_template("admin_dashboard.html", users=users)
 
-
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
-    logger.debug("Chatbot route accessed.")
+    logger.debug("Chatbot endpoint hit.")
     if 'email' not in session or session.get('role') != 'user':
         logger.debug("Unauthorized access attempt to /chatbot.")
         return jsonify({"error": "Unauthorized access"}), 403
@@ -218,14 +277,12 @@ def chatbot():
             logger.debug("No message provided.")
             return jsonify({"error": "Message is required"}), 400
 
-        # Simulate chatbot response for testing
-        response = chatbot_response(message)  # Replace with actual chatbot logic
-        logger.debug(f"Chatbot response: {response}")
+        response = chatbot_response(message)
+        logger.debug(f"Generated chatbot response: {response}")
         return jsonify({"response": response})
     except Exception as e:
         logger.error(f"Error in chatbot route: {e}")
         return jsonify({"error": "An error occurred while processing your request."}), 500
-
 
 @app.route('/')
 def root():
@@ -234,7 +291,6 @@ def root():
     elif session.get("role") == "admin":
         return redirect(url_for("admin_dashboard"))
     return redirect(url_for("login"))
-
 
 @app.route('/index', methods=["GET"])
 @loggedin
@@ -245,10 +301,10 @@ def index():
         return redirect(url_for("login"))
     return render_template("index.html")
 
+# Debugging routes
 @app.route('/debug_session')
 def debug_session():
     return jsonify(dict(session))
-
 
 # Run the application
 if __name__ == '__main__':

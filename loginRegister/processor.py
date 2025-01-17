@@ -12,7 +12,7 @@ import nltk
 from keras.models import load_model
 import numpy as np
 from nltk.stem import WordNetLemmatizer
-from loginRegister.utils import encrypt_data, decrypt_data  # New entry for encryption utilities
+from loginRegister.utils import encrypt_data, decrypt_data, execute_query  # New entry for encryption utilities
 from loginRegister.utils import encrypt_data, decrypt_data  # Adjusted for proper module path
 
 # Encrypt user query example
