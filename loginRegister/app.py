@@ -190,12 +190,13 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Get form data
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm-password')
-        role = request.form.get('role', 'user')  # Default role is 'user'
+        role = request.form.get('role', 'user').strip().lower()
+
+        logger.debug(f"Register attempt: Name={name}, Email={email}, Role={role}")
 
         # Validate input
         if not name or not email or not password or not confirm_password:
@@ -210,25 +211,32 @@ def register():
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         try:
-            # Database connection
             conn = get_db_connection()
             cursor = conn.cursor()
 
-            # Choose the table based on role
-            table_name = 'admins' if role.lower() == 'admin' else 'users'
+            # Validate role
+            if role not in ['admin', 'user']:
+                flash("Invalid role selected!", "danger")
+                return render_template("register.html")
 
-            # Prepare and execute the query
+            # Determine table
+            table_name = 'admins' if role == 'admin' else 'users'
             query = f"INSERT INTO {table_name} (username, email, password) VALUES (%s, %s, %s)"
+            logger.debug(f"Executing query: {query} with values ({name}, {email}, {hashed_password})")
+
             cursor.execute(query, (name, email, hashed_password))
             conn.commit()
 
+            logger.debug("Record successfully added.")
             flash("Registration successful!", "success")
             return redirect(url_for("login"))
 
+        except mysql.connector.IntegrityError as e:
+            logger.error(f"Integrity error: {e}")
+            flash("Email already exists!", "danger")
         except mysql.connector.Error as e:
-            logger.error(f"Database error during registration: {e}")
+            logger.error(f"Database error: {e}")
             flash("Internal server error!", "danger")
-
         finally:
             if cursor:
                 cursor.close()
@@ -236,6 +244,7 @@ def register():
                 conn.close()
 
     return render_template("register.html")
+
 
 @app.route('/admin/dashboard')
 @loggedin
