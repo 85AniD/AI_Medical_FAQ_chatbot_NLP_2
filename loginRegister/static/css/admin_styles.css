@@ -5,6 +5,7 @@
     font-family: "Poppins", sans-serif;
   }
   body {
+    /*https://www.freepik.com/free-photo/medical-banner-with-doctor-holding-stethoscope_30555912.htm*/
     background: url('/static/images/admin_bg.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Roboto', sans-serif;
