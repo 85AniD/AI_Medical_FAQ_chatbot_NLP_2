@@ -1,6 +1,5 @@
 import sys
 import os
-
 # Add the project root directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -12,14 +11,8 @@ import nltk
 from keras.models import load_model
 import numpy as np
 from nltk.stem import WordNetLemmatizer
-from loginRegister.utils import encrypt_data, decrypt_data, execute_query  # New entry for encryption utilities
-from loginRegister.utils import encrypt_data, decrypt_data  # Adjusted for proper module path
-
-# Encrypt user query example
-encrypted_query = encrypt_data("What is diabetes?")
-print("Encrypted Query:", encrypted_query)
-decrypted_query = decrypt_data(encrypted_query)
-print("Decrypted Query:", decrypted_query)
+from loginRegister.utils import execute_query
+from db.db_config import create_connection
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -27,17 +20,10 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 # Ensure NLTK data is downloaded
 nltk.download('punkt')
 
-# Dynamic project paths
+# File paths for required assets
 project_root = os.path.dirname(os.path.abspath(__file__))
 data_folder = os.path.join(project_root, 'data')
 
-# Ensure the data folder exists
-if not os.path.exists(data_folder):
-    os.makedirs(data_folder)
-    logging.error(f"Data folder not found. Created an empty folder: {data_folder}")
-    raise FileNotFoundError(f"Please add the required files to the data folder: {data_folder}")
-
-# File paths for required assets
 intents_file = os.path.join(data_folder, 'intents.json')
 words_file = os.path.join(data_folder, 'words.pkl')
 classes_file = os.path.join(data_folder, 'classes.pkl')
@@ -56,7 +42,6 @@ try:
     words = pickle.load(open(words_file, 'rb'))
     classes = pickle.load(open(classes_file, 'rb'))
     model = load_model(model_file)
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])  # Ensure model is compiled
     logging.info("All files loaded successfully.")
 except Exception as e:
     logging.error(f"Error loading files: {e}")
@@ -111,13 +96,26 @@ def get_response(ints, intents_json):
 
 def chatbot_response(msg):
     """Generates a response for the given message."""
+    msg = msg.strip()  # Ensure the message is not whitespace
+    if not msg:  # Handle empty messages
+        return "Hey! What can I do for you?"
+    
+    if msg.lower() in ["hello", "hi", "hey"]:  # Handle greetings
+        return "Hello! How can I assist you?"
+
+    # Predict intent using the model
     ints = predict_class(msg, model)
+    if not ints:  # Handle unknown intents
+        return "Sorry, I don't understand that."
+    
     return get_response(ints, intents)
 
-# Example function for user registration
+
 def register(userinfo):
     """Registers a new user into the database."""
+    connection = None
     try:
+        connection = create_connection()
         query = """
         INSERT INTO users (username, email, password)
         VALUES (%s, %s, %s)
@@ -127,3 +125,7 @@ def register(userinfo):
     except Exception as e:
         logging.error(f"Error registering user: {e}")
         return "Failed to register user."
+
+    finally:
+        if connection:
+            connection.close()

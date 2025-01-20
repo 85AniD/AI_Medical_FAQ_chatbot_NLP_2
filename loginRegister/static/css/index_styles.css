@@ -1,15 +1,13 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-  }
-  body {
+}
+
+body {
     background: url('/static/images/index_bg.jpg') no-repeat center center fixed;
     background-size: cover;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
     color: #02063d;
     display: flex;
     justify-content: center;
@@ -33,9 +31,7 @@ header {
 
 header h1 {
     font-size: 18px;
-    margin: 0;
-    color:rgba(207, 241, 231, 0.6);
-       
+    color: rgba(207, 241, 231, 0.6);
 }
 
 .logout-btn {
@@ -59,7 +55,6 @@ header h1 {
     border: 2px solid rgba(255, 255, 255, .2);
     backdrop-filter: blur(9px);
     color: #a4f8d898;
-    border-radius: 12px;
     border-radius: 10px;
     padding: 30px 40px;
     width: 90%;
@@ -71,13 +66,12 @@ header h1 {
 h1 {
     text-align: center;
     color: #2c3e50;
-    
 }
 
 .form-control {
     border-radius: 5px;
     height: 40px;
-    width:90%;
+    width: 90%;
     font-size: 16px;
 }
 
@@ -88,7 +82,6 @@ h1 {
     color: #423775;
     font-size: 15px;
     font-weight: bold;
-    border: none;
     padding: 6px 10px;
     border-radius: 5px;
 }

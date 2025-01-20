@@ -5,7 +5,6 @@ import os
 import mysql.connector
 from mysql.connector import Error
 
-
 SECRET_KEY = os.getenv('SECRET_KEY', b'some_16_byte_key')
 if len(SECRET_KEY) not in [16, 24, 32]:
     raise ValueError("SECRET_KEY must be 16, 24, or 32 bytes long.")
@@ -28,18 +27,16 @@ def decrypt_data(encrypted_data: str) -> str:
     cipher = AES.new(SECRET_KEY, AES.MODE_EAX, nonce=nonce)
     return cipher.decrypt_and_verify(ciphertext, tag).decode('utf-8')
 
-
 def execute_query(query, params=None):
     """Executes a given SQL query with optional parameters."""
     try:
-        # Connect to the database (ensure db_config.py has the correct credentials)
         from db.db_config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
         connection = mysql.connector.connect(
-            host='localhost',  # Replace with your host
-            user='root',  # Replace with your MySQL username
-            password='Qaz_123',  # Replace with your MySQL password
-            database='medical_faq_chatbot'  # Replace with your database name
+            host=DB_HOST,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME
         )
         if connection.is_connected():
             cursor = connection.cursor()
