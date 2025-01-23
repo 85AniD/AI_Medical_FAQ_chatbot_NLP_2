@@ -1,4 +1,4 @@
-import os
+'''import os
 import sys
 # Add the project root directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -6,10 +6,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import secrets
 import bcrypt
 import logging
+import nltk
 import mysql.connector
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
 from flask_session import Session
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from flask_talisman import Talisman
 from functools import wraps
@@ -19,21 +20,28 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+nltk.download('punkt')
+
 # Logging configuration
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+# Configuration
+class Config:
+    SECRET_KEY = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))
+    SESSION_PERMANENT = False
+    SESSION_TYPE = "filesystem"
+    SESSION_COOKIE_NAME = 'medical_faq_session'  
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_USER = os.getenv("DB_USER", "root")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "Qaz_123")
+    DB_NAME = os.getenv("DB_NAME", "medical_faq_chatbot")
+
 # Flask application initialization
 app = Flask(__name__)
-
-# Secret key and session configuration
-app.secret_key = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))
-app.session_cookie_name = "medical_faq_session"
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-
-# JWT Configuration
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))
+app.config.from_object(Config)
 
 # Security and session configuration with Content Security Policy
 csp = {
@@ -46,14 +54,20 @@ CORS(app)
 Session(app)
 jwt = JWTManager(app)
 
-# Database connection function
+# Database connection pool
+from mysql.connector import pooling
+
+db_pool = pooling.MySQLConnectionPool(
+    pool_name="db_pool",
+    pool_size=5,
+    host=app.config["DB_HOST"],
+    user=app.config["DB_USER"],
+    password=app.config["DB_PASSWORD"],
+    database=app.config["DB_NAME"],
+)
+
 def get_db_connection():
-    return mysql.connector.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        user=os.getenv("DB_USER", "root"),
-        password=os.getenv("DB_PASSWORD", "Qaz_123"),
-        database=os.getenv("DB_NAME", "medical_faq_chatbot"),
-    )
+    return db_pool.get_connection()
 
 # Login decorator
 def loggedin(func):
@@ -93,10 +107,16 @@ def login():
                     "role": user["role"],
                     "username": user["username"],
                 })
-                flash("Login successful!", "success")
-                return redirect(url_for("index" if user["role"] == "user" else "admin_dashboard"))
+
+                if user["role"] == "user":
+                    return redirect(url_for("index"))
+                elif user["role"] == "admin":
+                    return redirect(url_for("admin_dashboard"))
 
             flash("Invalid email or password!", "danger")
+        except mysql.connector.Error as e:
+            logger.error(f"Database error: {e}")
+            flash("An error occurred. Please try again later.", "danger")
         finally:
             if cursor:
                 cursor.close()
@@ -150,8 +170,10 @@ def register():
     return render_template("register.html")
 
 @app.route('/chatbot', methods=['POST'])
+@jwt_required()
 def chatbot():
-    if 'email' not in session or session.get('role') != 'user':
+    current_user = get_jwt_identity()
+    if not current_user:
         return jsonify({"error": "Unauthorized access"}), 403
 
     data = request.get_json()
@@ -159,8 +181,14 @@ def chatbot():
     if not message:
         return jsonify({"error": "Message is required"}), 400
 
-    response = chatbot_response(message)
-    return jsonify({"response": response})
+    try:
+        logger.debug(f"Received message: {message}")
+        response = chatbot_response(message)
+        logger.debug(f"Generated response: {response}")
+        return jsonify({"response": response})
+    except Exception as e:
+        logger.error(f"Error in chatbot response: {e}")
+        return jsonify({"error": "An error occurred while processing your request"}), 500
 
 @app.route('/')
 def root():
@@ -247,10 +275,7 @@ def delete_user(user_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        query = """
-            DELETE FROM users
-            WHERE id = %s
-        """
+        query = "DELETE FROM users WHERE id = %s"
         cursor.execute(query, (user_id,))
         conn.commit()
 
@@ -264,6 +289,360 @@ def delete_user(user_id):
         if conn:
             conn.close()
 
-# Run the application
-if __name__ == '__main__':
+# Health check endpoint
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "ok"}), 200
+
+# Error handlers
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('500.html'), 500
+
+if __name__ == "__main__":
+    app.run(debug=True, use_reloader=False)
+'''
+
+import os
+import sys
+# Add the project root directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import secrets
+import bcrypt
+import logging
+import nltk
+import mysql.connector
+from flask import Flask, request, g, jsonify, render_template, redirect, url_for, flash, session
+from flask_session import Session
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
+from flask_cors import CORS
+from flask_talisman import Talisman
+from functools import wraps
+from dotenv import load_dotenv
+from loginRegister.processor import chatbot_response
+from loginRegister.utils import hash_password
+from mysql.connector import pooling
+from datetime import datetime, timedelta
+import jwt
+
+load_dotenv()
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+nltk.download('punkt')
+
+# Logging configuration
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+# Flask configuration
+class Config:
+    SECRET_KEY = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))
+    SESSION_PERMANENT = False
+    SESSION_TYPE = "filesystem"
+    PERMANENT_SESSION_LIFETIME = timedelta(hours=1)
+    SESSION_COOKIE_NAME = 'medical_faq_session'
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_USER = os.getenv("DB_USER", "root")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "Qaz_123")
+    DB_NAME = os.getenv("DB_NAME", "medical_faq_chatbot")
+
+app = Flask(__name__)
+app.config.from_object(Config)
+Talisman(app)
+CORS(app)
+Session(app)
+jwt = JWTManager(app)
+
+# Helper function to generate JWT token
+def generate_token(username):
+    payload = {
+        "username": username,
+        "exp": datetime.utcnow() + timedelta(hours=1)  # Token expires in 1 hour
+    }
+    return jwt.encode(payload, app.config["SECRET_KEY"], algorithm="HS256")
+
+# Helper function to verify JWT token
+def verify_token(token):
+    try:
+        decoded = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])
+        return decoded
+    except jwt.ExpiredSignatureError:
+        return None  # Token has expired
+    except jwt.InvalidTokenError:
+        return None  # Invalid token
+
+# Before request, generate a nonce and attach it to the global object
+@app.before_request
+def generate_nonce():
+    g.nonce = secrets.token_hex(16)  # Generate a random 16-byte hex string
+    app.config['NONCE'] = g.nonce  # Store the nonce globally if needed for headers
+
+# Database connection pool
+db_pool = pooling.MySQLConnectionPool(
+    pool_name="db_pool",
+    pool_size=5,
+    host=app.config["DB_HOST"],
+    user=app.config["DB_USER"],
+    password=app.config["DB_PASSWORD"],
+    database=app.config["DB_NAME"],
+)
+
+def get_db_connection():
+    return db_pool.get_connection()
+
+# Decorator for logged-in user
+def loggedin(func):
+    @wraps(func)
+    def secure_function(*args, **kwargs):
+        if not session.get("email"):
+            flash("Please log in to access this page.", "warning")
+            return redirect(url_for("login"))
+        return func(*args, **kwargs)
+    return secure_function
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm-password')
+        role = request.form.get('role', 'user').strip().lower()
+
+        if not name or not email or not password or not confirm_password:
+            flash("All fields are required!", "danger")
+            return render_template("register.html")
+
+        if password != confirm_password:
+            flash("Passwords do not match!", "danger")
+            return render_template("register.html")
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            table_name = 'admins' if role == 'admin' else 'users'
+            query = f"INSERT INTO {table_name} (username, email, password) VALUES (%s, %s, %s)"
+
+            cursor.execute(query, (name, email, hashed_password))
+            conn.commit()
+            flash("Registration successful!", "success")
+            return redirect(url_for("login"))
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+    return render_template("register.html")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not email or not password:
+            flash("Email and password are required!", "danger")
+            return render_template("login.html")
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor(dictionary=True)
+            query = """
+                SELECT 'user' AS role, username, email, password FROM users WHERE email = %s
+                UNION
+                SELECT 'admin' AS role, username, email, password FROM admins WHERE email = %s
+            """
+            cursor.execute(query, (email, email))
+            user = cursor.fetchone()
+
+            if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+                session.clear()
+                session.update({
+                    "email": user["email"],
+                    "role": user["role"],
+                    "username": user["username"],
+                })
+                logger.info(f"Login successful for user: {user['email']}, role: {user['role']}")
+
+                if user["role"] == "user":
+                    return redirect(url_for("index"))
+                elif user["role"] == "admin":
+                    return redirect(url_for("admin_dashboard"))
+
+            flash("Invalid email or password!", "danger")
+        except mysql.connector.Error as e:
+            logger.error(f"Database error during login: {e}")
+            flash("An error occurred. Please try again later.", "danger")
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+    return render_template("login.html")
+
+@app.route('/index', methods=["GET"])
+@loggedin
+def index():
+    if session.get('role') != 'user':
+        flash("Access denied! Admins cannot access the user dashboard.", "danger")
+        return redirect(url_for("login"))
+    logger.info(f"User dashboard accessed by {session.get('email')}")
+    return render_template("index.html")
+
+@app.route('/admin/dashboard', methods=["GET"])
+@loggedin
+def admin_dashboard():
+    logger.debug(f"Accessing admin_dashboard. Session: {dict(session)}")
+    if session.get('role') != 'admin':
+        flash("Access denied! Only admins can access this page.", "danger")
+        return redirect(url_for("login"))
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT id, username, email FROM users")
+        users = cursor.fetchall()
+        logger.debug(f"Fetched users: {users}")
+    except mysql.connector.Error as e:
+        logger.error(f"Database error: {e}")
+        users = []
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+    return render_template("admin_dashboard.html", users=users)
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logger.info(f"User logged out: {session.get('email')}")
+    session.clear()
+    flash("Logged out successfully!", "success")
+    return redirect(url_for("login"))
+
+@app.route('/')
+def root():
+    if session.get("role") == "user":
+        return redirect(url_for("index"))
+    elif session.get("role") == "admin":
+        return redirect(url_for("admin_dashboard"))
+    return redirect(url_for("login"))
+def index():
+    nonce = secrets.token_urlsafe(16)  # Generate a unique nonce
+    return render_template("index.html", nonce=nonce, username=session.get("username"))
+
+@app.after_request
+def set_csp(response):
+    nonce = g.get('nonce', '')
+    csp_policy = f"default-src 'self'; script-src 'self' 'nonce-{nonce}';"
+    response.headers['Content-Security-Policy'] = csp_policy
+    return response
+
+@app.route('/chatbot', methods=['POST'])
+@jwt_required()
+def chatbot():
+    # Retrieve the current user's identity from the JWT
+    current_user = get_jwt_identity()
+    if not current_user or current_user.get('role') != 'user':
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    # Parse and validate the incoming message
+    data = request.get_json()
+    message = data.get("message", "").strip()
+    if not message:
+        return jsonify({"error": "Message is required"}), 400
+
+    try:
+        logger.debug(f"Received message: {message}")
+        response = chatbot_response(message)
+        logger.debug(f"Generated response: {response}")
+        return jsonify({"response": response})
+    except Exception as e:
+        logger.error(f"Error in chatbot response: {e}")
+        return jsonify({"error": "An error occurred while processing your request"}), 500
+
+# Modify user
+@app.route('/admin/modify_user/<int:user_id>', methods=['POST'])
+@loggedin
+def modify_user(user_id):
+    if session.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    try:
+        data = request.get_json()
+        new_username = data.get("username")
+        new_email = data.get("email")
+        if not new_username or not new_email:
+            return jsonify({"error": "Username and email are required"}), 400
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        query = """
+            UPDATE users
+            SET username = %s, email = %s
+            WHERE id = %s
+        """
+        cursor.execute(query, (new_username, new_email, user_id))
+        conn.commit()
+
+        return jsonify({"message": "User updated successfully"})
+    except mysql.connector.Error as e:
+        logger.error(f"Error modifying user: {e}")
+        return jsonify({"error": "Failed to modify user"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+# Delete user
+@app.route('/admin/delete_user/<int:user_id>', methods=['DELETE'])
+@loggedin
+def delete_user(user_id):
+    if session.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        query = "DELETE FROM users WHERE id = %s"
+        cursor.execute(query, (user_id,))
+        conn.commit()
+
+        return jsonify({"message": "User deleted successfully"})
+    except mysql.connector.Error as e:
+        logger.error(f"Error deleting user: {e}")
+        return jsonify({"error": "Failed to delete user"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+# Health check endpoint
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "ok"}), 200
+
+# Error handlers
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('500.html'), 500
+
+if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)

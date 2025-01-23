@@ -8,7 +8,7 @@ import random
 import pickle
 import logging
 import nltk
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import numpy as np
 from nltk.stem import WordNetLemmatizer
 from loginRegister.utils import execute_query
@@ -54,7 +54,7 @@ def clean_up_sentence(sentence):
     """Tokenizes and lemmatizes a given sentence."""
     try:
         sentence_words = nltk.word_tokenize(sentence)
-        return [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
+        return [word.lower() for word in nltk.word_tokenize(sentence) if word.isalnum()]
     except Exception as e:
         logging.error(f"Error cleaning sentence: {e}")
         raise

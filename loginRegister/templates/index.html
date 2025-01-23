@@ -3,91 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{ nonce }}';">
     <title>AI Medical FAQ ChatBot</title>
+    <link rel="icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/index_styles.css">
-    <!-- Load jQuery from CDN -->
-    <script src="/static/js/jquery3.7.1.js"></script>
-
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <h1>AI Medical FAQ ChatBot</h1> 
-        <form action="{{ url_for('logout') }}" method="post" style="margin: 0;">Hi, {{ session['username'] }}!&nbsp;
-            <button class="logout-btn">Logout</button>
+        <h1>AI Medical FAQ ChatBot</h1>
+        <form action="{{ url_for('logout') }}" method="get" style="margin: 0;">
+            Hi, {{ username }}!&nbsp;
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
     </header>
 
-    <!-- Main Container -->
     <div class="container">
         <form id="chat-form">
             <div class="form-group">
                 <input type="text" id="question" class="form-control" placeholder="Type your question here...">
-            <button type="submit" id="submit-button" class="btn-primary">Send</button>
+                <button type="submit" id="submit-button" class="btn-primary">Send</button>
             </div>
         </form>
-        
-        <!-- Response Block -->
+
         <div id="response-container">
             <h4>Chat History</h4>
-            <div id="response">
-                <!-- Chatbot responses will appear here -->
-            </div>
+            <div id="response"></div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>&copy; 2025 AI Medical ChatBot. All Rights Reserved.</footer>
-
-    <!-- Custom JavaScript -->
-    <script>
-        $(document).ready(function () {
-            function sendQuery() {
-                const question = $("#question").val().trim();
-                if (!question) {
-                    alert("Please enter a question.");
-                    return;
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/chatbot",
-                    contentType: "application/json",
-                    data: JSON.stringify({ message: question }),
-                    success: function (result) {
-                        appendMessage("Me", question);
-                        appendMessage("AIbot", result.response);
-                        $("#question").val(""); // Clear the input field
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error details:", status, error, xhr.responseText);
-                        appendMessage("AIbot", "Sorry, something went wrong. Please try again.");
-                    }
-                });
-            }
-
-            function appendMessage(sender, message) {
-                const messageHtml = `<p><strong>${sender}:</strong> ${message}</p>`;
-                $("#response").append(messageHtml);
-                $("#response").scrollTop($("#response")[0].scrollHeight);
-            }
-
-            // Prevent default form submission
-            $("#chat-form").submit(function (e) {
-                e.preventDefault();
-                sendQuery();
-            });
-
-            // Handle Enter key press
-            $("#question").keypress(function (e) {
-                if (e.which === 13) {
-                    e.preventDefault();
-                    sendQuery();
-                }
-            });
-        });
-    </script>
-
+    <script src="/static/js/jquery3.7.1.js"></script>
+    <script src="/static/js/main.js" nonce="{{ nonce }}"></script>
 </body>
 </html>

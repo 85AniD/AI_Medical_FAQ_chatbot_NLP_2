@@ -1,30 +1,32 @@
-<!-- Updated admin_dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-randomNonce123'; style-src 'self';">
     <title>Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/admin_styles.css">
     <script src="/static/js/jquery3.7.1.js"></script>
+    <script src="/static/js/admin_dashboard.js" nonce="randomNonce123"></script>
 </head>
 <body>
-        <!-- Header -->
-        <header>
-            <h1>AI Medical FAQ ChatBot</h1> 
-            <form action="{{ url_for('logout') }}" method="post" style="margin: 0;">Hi, {{ session['username'] }}!&nbsp;
-                <button class="logout-btn">Logout</button>
-            </form>
-        </header>
-        
+    <!-- Header -->
+    <header>
+        <h1>AI Medical FAQ ChatBot</h1> 
+        <form action="{{ url_for('logout') }}" method="post" style="margin: 0;">Hi, {{ session['username'] }}!&nbsp;
+            <button class="logout-btn">Logout</button>
+        </form>
+    </header>
+    
     <div class="container">
-        <div class="container" style="height: 60px; padding: 10px;">
+        <div class="header">
             <h1>Admin Dashboard</h1>
         </div>
         <h2 class="center-text">Registered Users</h2>
-        <table class="container">
+        <table class="user-table">
             <thead>
-                <tr align="left">
+                <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -54,58 +56,5 @@
     </div>
     <!-- Footer -->
     <footer>&copy; 2025 AI Medical ChatBot. All Rights Reserved.</footer>
-
-<script>
-    function modify_user(userId) {
-        const newUsername = prompt("Enter new username:");
-        const newEmail = prompt("Enter new email:");
-        if (!newUsername || !newEmail) {
-            alert("Both username and email are required!");
-            return;
-        }
-
-        fetch(`/admin/modify_user/${userId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: newUsername,
-                email: newEmail,
-            }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.error) {
-                alert(`Error: ${data.error}`);
-            } else {
-                alert(data.message);
-                location.reload(); // Reload the page to reflect changes
-            }
-        })
-        .catch((error) => console.error("Error:", error));
-    }
-
-    function delete_user(userId) {
-        if (!confirm("Are you sure you want to delete this user?")) {
-            return;
-        }
-
-        fetch(`/admin/delete_user/${userId}`, {
-            method: "DELETE",
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.error) {
-                alert(`Error: ${data.error}`);
-            } else {
-                alert(data.message);
-                location.reload(); // Reload the page to reflect changes
-            }
-        })
-        .catch((error) => console.error("Error:", error));
-    }
-</script>
-
 </body>
 </html>
