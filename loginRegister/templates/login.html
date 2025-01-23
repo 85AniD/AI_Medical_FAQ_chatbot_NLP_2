@@ -6,7 +6,8 @@
   <title>Login Form</title>
   <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
   <link rel="stylesheet" href="static/css/styles.css">
-  <script  src="/static/js/jquery3.7.1.js">
+  <script src="/static/js/jquery3.7.1.js"></script>
+  <script nonce="{{ nonce }}">
     // Handle JSON-based login submission
     async function handleLogin(event) {
       event.preventDefault(); // Prevent default form submission
@@ -21,6 +22,8 @@
         });
 
         if (response.ok) {
+          const result = await response.json();
+          localStorage.setItem("jwt_token", result.access_token); // Store the token
           window.location.href = '/'; // Redirect to home on success
         } else {
           const result = await response.json();
@@ -31,6 +34,11 @@
         alert('An error occurred. Please try again later.');
       }
     }
+
+    // Attach the handler to the form
+    $(document).ready(function () {
+      $('#login-form').submit(handleLogin);
+    });
   </script>
 </head>
 <body>
@@ -41,7 +49,7 @@
   <div class="wrapper">
     <h1>Login</h1>
     <!-- Form with JavaScript handler for login -->
-    <form id="login-form" action="/login" method="POST">
+    <form id="login-form">
       <div class="input-box">
         <input type="email" id="email" name="email" placeholder="Email" required>
       </div>
