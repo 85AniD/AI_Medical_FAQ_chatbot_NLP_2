@@ -151,3 +151,9 @@ header {
   z-index: 1000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
+
+.btn:focus,
+a:focus {
+    outline: 2px dashed #007BFF;
+    outline-offset: 3px;
+}

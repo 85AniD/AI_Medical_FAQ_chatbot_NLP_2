@@ -20,31 +20,36 @@ $(document).ready(function () {
     }
 
     // Send a query to the chatbot
-    function sendQuery() {
+    async function sendQuery() {
         const question = $("#question").val().trim();
         if (!question) {
             alert("Please enter a question.");
             return;
         }
 
-        $.ajax({
-            type: "POST",
-            url: "/chatbot",
-            contentType: "application/json",
-            headers: {
-                "Authorization": `Bearer ${token}` // Include the token
-            },
-            data: JSON.stringify({ message: question }),
-            success: function (result) {
+        try {
+            const response = await fetch("/chatbot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Include the token
+                },
+                body: JSON.stringify({ message: question })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
                 appendMessage("Me", question);
                 appendMessage("AIbot", result.response);
                 $("#question").val(""); // Clear input field
-            },
-            error: function (xhr) {
-                const errorMessage = xhr.responseJSON?.error || "An error occurred. Please try again.";
+            } else {
+                const errorMessage = (await response.json()).error || "An error occurred. Please try again.";
                 appendMessage("AIbot", errorMessage);
             }
-        });
+        } catch (error) {
+            console.error("Error sending query:", error);
+            appendMessage("AIbot", "An error occurred. Please try again.");
+        }
     }
 
     // Append a message to the chat history

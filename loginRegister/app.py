@@ -84,12 +84,18 @@ def loggedin(func):
 @app.before_request
 def generate_nonce():
     g.nonce = secrets.token_hex(16)
+    print(f"Generated nonce: {g.nonce}")
 
 @app.after_request
 def set_csp(response):
     nonce = g.get('nonce', '')
-    csp_policy = f"default-src 'self'; script-src 'self' 'nonce-{nonce}';"
+    csp_policy = (
+        f"default-src 'self'; "
+        f"script-src 'self' 'nonce-{nonce}'; "
+        f"style-src 'self' 'nonce-{nonce}';"
+    )
     response.headers['Content-Security-Policy'] = csp_policy
+    logger.info(f"Generated CSP Policy: {csp_policy}")
     return response
 
 @app.route('/register', methods=['GET', 'POST'])
