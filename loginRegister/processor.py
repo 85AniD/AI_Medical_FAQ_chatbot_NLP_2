@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 # Add the project root directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -8,8 +8,8 @@ import random
 import pickle
 import logging
 import nltk
-from tensorflow.keras.models import load_model
 import numpy as np
+from tensorflow.keras.models import load_model
 from nltk.stem import WordNetLemmatizer
 from loginRegister.utils import execute_query
 from db.db_config import create_connection
@@ -54,7 +54,7 @@ def clean_up_sentence(sentence):
     """Tokenizes and lemmatizes a given sentence."""
     try:
         sentence_words = nltk.word_tokenize(sentence)
-        return [word.lower() for word in nltk.word_tokenize(sentence) if word.isalnum()]
+        return [word.lower() for word in sentence_words if word.isalnum()]
     except Exception as e:
         logging.error(f"Error cleaning sentence: {e}")
         raise
@@ -96,20 +96,23 @@ def get_response(ints, intents_json):
 
 def chatbot_response(msg):
     """Generates a response for the given message."""
-    msg = msg.strip()  # Ensure the message is not whitespace
-    if not msg:  # Handle empty messages
-        return "Hey! What can I do for you?"
-    
-    if msg.lower() in ["hello", "hi", "hey"]:  # Handle greetings
-        return "Hello! How can I assist you?"
+    try:
+        msg = msg.strip()  # Ensure the message is not whitespace
+        if not msg:  # Handle empty messages
+            return "Hey! What can I do for you?"
 
-    # Predict intent using the model
-    ints = predict_class(msg, model)
-    if not ints:  # Handle unknown intents
-        return "Sorry, I don't understand that."
-    
-    return get_response(ints, intents)
+        if msg.lower() in ["hello", "hi", "hey"]:  # Handle greetings
+            return "Hello! How can I assist you?"
 
+        # Predict intent using the model
+        ints = predict_class(msg, model)
+        if not ints:  # Handle unknown intents
+            return "Sorry, I don't understand that."
+
+        return get_response(ints, intents)
+    except Exception as e:
+        logging.error(f"Error in chatbot_response: {e}", exc_info=True)
+        return "An error occurred while processing your request."
 
 def register(userinfo):
     """Registers a new user into the database."""
@@ -125,7 +128,6 @@ def register(userinfo):
     except Exception as e:
         logging.error(f"Error registering user: {e}")
         return "Failed to register user."
-
     finally:
         if connection:
             connection.close()

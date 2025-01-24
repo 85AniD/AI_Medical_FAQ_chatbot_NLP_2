@@ -7,21 +7,20 @@
     <title>AI Medical FAQ ChatBot</title>
     <link rel="icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/index_styles.css">
-    <script src="/static/js/main.js" nonce="{{ nonce }}"></script>
 </head>
 <body>
     <header>
         <h1>AI Medical FAQ ChatBot</h1>
-        <form action="{{ url_for('logout') }}" method="get" style="margin: 0;">
+        <form action="{{ url_for('logout') }}" method="get" class="logout-form">
             Hi, {{ username }}!&nbsp;
             <button type="submit" class="logout-btn">Logout</button>
-        </form>
+        </form>        
     </header>
 
     <div class="container">
         <form id="chat-form">
             <div class="form-group">
-                <input type="text" id="question" class="form-control" placeholder="Type your question here...">
+                <input type="text" id="question" class="form-control" placeholder="Type your question here..." autocomplete="off">
                 <button type="submit" id="submit-button" class="btn-primary">Send</button>
             </div>
         </form>
@@ -33,7 +32,11 @@
     </div>
 
     <footer>&copy; 2025 AI Medical ChatBot. All Rights Reserved.</footer>
+
+    <!-- Include jQuery -->
     <script src="/static/js/jquery3.7.1.js"></script>
+
+    <!-- Include the main JavaScript file with nonce -->
     <script src="/static/js/main.js" nonce="{{ nonce }}"></script>
 </body>
 </html>

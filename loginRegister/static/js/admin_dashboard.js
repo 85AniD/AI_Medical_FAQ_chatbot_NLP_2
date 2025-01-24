@@ -1,49 +1,69 @@
-function modify_user(userId) {
-    const newUsername = prompt("Enter new username:");
-    const newEmail = prompt("Enter new email:");
-    if (!newUsername || !newEmail) {
-        alert("Both username and email are required!");
+function modify_user(user_id) {
+    const new_username = prompt("Enter the new username:");
+    const new_email = prompt("Enter the new email:");
+
+    if (!new_username || !new_email) {
+        alert("Username and email are required!");
         return;
     }
 
-    fetch(`/admin/modify_user/${userId}`, {
-        method: "POST",
+    console.log(`Modifying user ${user_id} with username: ${new_username}, email: ${new_email}`);
+
+    fetch(`/admin/modify_user/${user_id}`, {
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token() }}'  // Include CSRF token if needed
         },
         body: JSON.stringify({
-            username: newUsername,
-            email: newEmail,
-        }),
+            username: new_username,
+            email: new_email
+        })
     })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data.error) {
-            alert(`Error: ${data.error}`);
+    .then(response => {
+        console.log("Modify user response:", response);
+        if (response.ok) {
+            alert("User modified successfully!");
+            window.location.reload();
         } else {
-            alert(data.message);
-            location.reload(); // Reload the page to reflect changes
+            response.json().then(data => {
+                alert(`Error: ${data.error}`);
+            });
         }
     })
-    .catch((error) => console.error("Error:", error));
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred while modifying the user.");
+    });
 }
 
-function delete_user(userId) {
+function delete_user(user_id) {
     if (!confirm("Are you sure you want to delete this user?")) {
         return;
     }
 
-    fetch(`/admin/delete_user/${userId}`, {
-        method: "DELETE",
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data.error) {
-            alert(`Error: ${data.error}`);
-        } else {
-            alert(data.message);
-            location.reload(); // Reload the page to reflect changes
+    console.log(`Deleting user ${user_id}`);
+
+    fetch(`/admin/delete_user/${user_id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token() }}'  // Include CSRF token if needed
         }
     })
-    .catch((error) => console.error("Error:", error));
+    .then(response => {
+        console.log("Delete user response:", response);
+        if (response.ok) {
+            alert("User deleted successfully!");
+            window.location.reload();
+        } else {
+            response.json().then(data => {
+                alert(`Error: ${data.error}`);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred while deleting the user.");
+    });
 }

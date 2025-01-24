@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-randomNonce123'; style-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{ nonce }}'; style-src 'self';">
     <title>Admin Dashboard</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/admin_styles.css">
@@ -14,7 +14,8 @@
     <!-- Header -->
     <header>
         <h1>AI Medical FAQ ChatBot</h1> 
-        <form action="{{ url_for('logout') }}" method="post" style="margin: 0;">Hi, {{ session['username'] }}!&nbsp;
+        <form action="{{ url_for('logout') }}" method="get" class="logout-form">
+            Hi, {{ session['username'] }}!&nbsp;
             <button class="logout-btn">Logout</button>
         </form>
     </header>

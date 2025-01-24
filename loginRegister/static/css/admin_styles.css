@@ -62,6 +62,10 @@ h1 {
     background: #c0392b;
 }
 
+.logout-form {
+    margin: 0;
+}
+
 .container {
     flex: 1;
     background: transparent;

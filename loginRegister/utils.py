@@ -11,15 +11,12 @@ import logging
 # Load environment variables from .env file
 load_dotenv()
 
-# Debug statement
-print(f"SECRET_KEY: {os.getenv('SECRET_KEY')}")
-
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Debug statement
-print(f"SECRET_KEY: {os.getenv('SECRET_KEY')}")
+# Debug statement to verify SECRET_KEY is loaded
+logger.info(f"SECRET_KEY: {os.getenv('SECRET_KEY')}")
 
 # SECRET_KEY validation
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -28,7 +25,8 @@ if not SECRET_KEY:
 
 # Decode the SECRET_KEY from base64
 try:
-    SECRET_KEY = base64.urlsafe_b64decode(SECRET_KEY)
+    # Ensure the SECRET_KEY is a valid base64-encoded string
+    SECRET_KEY = base64.urlsafe_b64decode(SECRET_KEY + '=' * (-len(SECRET_KEY) % 4))  # Add padding if necessary
 except Exception as e:
     raise ValueError("Invalid SECRET_KEY: Must be a valid base64-encoded string.") from e
 
@@ -38,18 +36,30 @@ if len(SECRET_KEY) not in [16, 24, 32]:
 
 def hash_password(password: str) -> str:
     """Hashes a password using bcrypt."""
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    try:
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    except Exception as e:
+        logger.error(f"Error hashing password: {e}")
+        raise ValueError("Error hashing password.") from e
 
 def verify_password(password: str, hashed_password: str) -> bool:
     """Verifies a password against a hashed password."""
-    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+    try:
+        return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+    except Exception as e:
+        logger.error(f"Error verifying password: {e}")
+        raise ValueError("Error verifying password.") from e
 
 def encrypt_data(data: str) -> str:
     """Encrypts data using AES in EAX mode."""
-    cipher = AES.new(SECRET_KEY, AES.MODE_EAX)
-    nonce = cipher.nonce
-    ciphertext, tag = cipher.encrypt_and_digest(data.encode('utf-8'))
-    return base64.b64encode(nonce + tag + ciphertext).decode('utf-8')
+    try:
+        cipher = AES.new(SECRET_KEY, AES.MODE_EAX)
+        nonce = cipher.nonce
+        ciphertext, tag = cipher.encrypt_and_digest(data.encode('utf-8'))
+        return base64.b64encode(nonce + tag + ciphertext).decode('utf-8')
+    except Exception as e:
+        logger.error(f"Error encrypting data: {e}")
+        raise ValueError("Error encrypting data.") from e
 
 def decrypt_data(encrypted_data: str) -> str:
     """Decrypts data encrypted with AES in EAX mode."""
@@ -61,12 +71,17 @@ def decrypt_data(encrypted_data: str) -> str:
     except (ValueError, KeyError) as e:
         logger.error(f"Decryption failed: {e}")
         raise ValueError("Decryption failed: Invalid or tampered data.") from e
+    except Exception as e:
+        logger.error(f"Error decrypting data: {e}")
+        raise ValueError("Error decrypting data.") from e
 
 def execute_query(query: str, params: Optional[tuple] = None, db_config: Optional[Dict] = None) -> Union[str, List[Dict]]:
     """Executes a given SQL query with optional parameters."""
     if not db_config:
         raise ValueError("Database configuration is required.")
 
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(**db_config)
         if connection.is_connected():
@@ -77,9 +92,12 @@ def execute_query(query: str, params: Optional[tuple] = None, db_config: Optiona
             else:
                 connection.commit()
                 result = "Query executed successfully."
-            cursor.close()
-            connection.close()
             return result
     except Error as e:
         logger.error(f"Error executing query: {e}")
         return f"Error executing query: {e}"
+    finally:
+        if cursor:
+            cursor.close()
+        if connection and connection.is_connected():
+            connection.close()

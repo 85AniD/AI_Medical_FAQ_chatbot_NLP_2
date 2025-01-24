@@ -31,8 +31,8 @@ logger = logging.getLogger(__name__)
 
 # Flask configuration
 class Config:
-    SECRET_KEY = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))
+    SECRET_KEY = os.getenv("FLASK_SECRET_KEY")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
     SESSION_PERMANENT = False
     SESSION_TYPE = "filesystem"
     PERMANENT_SESSION_LIFETIME = timedelta(hours=1)
@@ -198,7 +198,7 @@ def login():
 
     else:
         return render_template("login.html", nonce=g.nonce)
-
+    
 @app.route('/index', methods=["GET"])
 @loggedin
 def index():
@@ -235,24 +235,39 @@ def admin_dashboard():
 @app.route('/chatbot', methods=['POST'])
 @jwt_required()
 def chatbot():
-    current_user = get_jwt_identity()
-    if not current_user or current_user.get('role') != 'user':
-        return jsonify({"error": "Unauthorized access"}), 403
-
-    data = request.get_json()
-    message = data.get("message", "").strip()
-    if not message:
-        return jsonify({"error": "Message is required"}), 400
-
     try:
-        logger.debug(f"Received message: {message}")
-        response = chatbot_response(message)
-        logger.debug(f"Generated response: {response}")
-        return jsonify({"response": response})
-    except Exception as e:
-        logger.error(f"Error in chatbot response: {e}")
-        return jsonify({"error": "An error occurred while processing your request"}), 500
+        # Get the current user's identity from the JWT token
+        current_user = get_jwt_identity()
+        if not current_user or current_user.get('role') != 'user':
+            return jsonify({"error": "Unauthorized access. Only users can interact with the chatbot."}), 403
 
+        # Validate the request body
+        data = request.get_json()
+        if not data:
+            logger.error("No data provided in the request body.")
+            return jsonify({"error": "Request body is required and must be in JSON format."}), 400
+
+        # Validate the subject field
+        subject = data.get("subject", "").strip()
+        if not subject or not isinstance(subject, str):
+            logger.error("Invalid or missing subject field.")
+            return jsonify({"error": "Subject must be a string."}), 422
+
+        # Validate the message field
+        message = data.get("message", "").strip()
+        if not message:
+            logger.error("Empty message received.")
+            return jsonify({"error": "Message is required and cannot be empty."}), 422
+
+        # Get the chatbot's response
+        response = chatbot_response(message)
+        logger.info(f"Chatbot response generated for user {current_user['username']}: {response}")
+        return jsonify({"response": response}), 200
+
+    except Exception as e:
+        logger.error(f"Unexpected error in chatbot endpoint: {e}", exc_info=True)
+        return jsonify({"error": "An internal server error occurred while processing your request."}), 500    
+             
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     logger.info(f"User logged out: {session.get('email')}")
@@ -273,59 +288,67 @@ def root():
 @loggedin
 def modify_user(user_id):
     if session.get('role') != 'admin':
+        logger.warning(f"Unauthorized access attempt by user {session.get('username')}")
         return jsonify({"error": "Unauthorized access"}), 403
 
     try:
         data = request.get_json()
+        if not data:
+            logger.error("No data provided in modify_user request")
+            return jsonify({"error": "No data provided"}), 400
+
         new_username = data.get("username")
         new_email = data.get("email")
+
         if not new_username or not new_email:
+            logger.error("Username or email missing in modify_user request")
             return jsonify({"error": "Username and email are required"}), 400
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        query = """
-            UPDATE users
-            SET username = %s, email = %s
-            WHERE id = %s
-        """
-        cursor.execute(query, (new_username, new_email, user_id))
-        conn.commit()
+        logger.info(f"Modifying user {user_id} with username: {new_username}, email: {new_email}")
 
-        return jsonify({"message": "User updated successfully"})
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                query = """
+                    UPDATE users
+                    SET username = %s, email = %s
+                    WHERE id = %s
+                """
+                cursor.execute(query, (new_username, new_email, user_id))
+                conn.commit()
+
+        return jsonify({"message": "User updated successfully"}), 200
     except mysql.connector.Error as e:
-        logger.error(f"Error modifying user: {e}")
-        return jsonify({"error": "Failed to modify user"}), 500
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
+        logger.error(f"Database error while modifying user {user_id}: {e}")
+        return jsonify({"error": "Database error occurred"}), 500
+    except Exception as e:
+        logger.error(f"Unexpected error while modifying user {user_id}: {e}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
-# Delete user
+#delete user
 @app.route('/admin/delete_user/<int:user_id>', methods=['DELETE'])
 @loggedin
 def delete_user(user_id):
     if session.get('role') != 'admin':
+        logger.warning(f"Unauthorized access attempt by user {session.get('username')}")
         return jsonify({"error": "Unauthorized access"}), 403
 
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        query = "DELETE FROM users WHERE id = %s"
-        cursor.execute(query, (user_id,))
-        conn.commit()
+        logger.info(f"Deleting user {user_id}")
 
-        return jsonify({"message": "User deleted successfully"})
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                query = "DELETE FROM users WHERE id = %s"
+                cursor.execute(query, (user_id,))
+                conn.commit()
+
+        return jsonify({"message": "User deleted successfully"}), 200
     except mysql.connector.Error as e:
-        logger.error(f"Error deleting user: {e}")
-        return jsonify({"error": "Failed to delete user"}), 500
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
-
+        logger.error(f"Database error while deleting user {user_id}: {e}")
+        return jsonify({"error": "Database error occurred"}), 500
+    except Exception as e:
+        logger.error(f"Unexpected error while deleting user {user_id}: {e}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
+        
 # Health check endpoint
 @app.route('/health', methods=['GET'])
 def health_check():
