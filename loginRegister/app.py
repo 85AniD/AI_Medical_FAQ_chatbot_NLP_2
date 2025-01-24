@@ -181,7 +181,12 @@ def login():
                     identity={"username": user["username"], "role": user["role"]},
                     expires_delta=timedelta(hours=1)
                 )
-                return jsonify({"access_token": access_token}), 200
+                # Return the token to the frontend
+                return jsonify({
+                    "access_token": access_token,
+                    "username": user["username"],
+                    "role": user["role"]
+                }), 200
 
             logger.warning(f"Invalid login attempt for email: {email}")
             return jsonify({"error": "Invalid email or password!"}), 401
@@ -198,7 +203,7 @@ def login():
 
     else:
         return render_template("login.html", nonce=g.nonce)
-    
+        
 @app.route('/index', methods=["GET"])
 @loggedin
 def index():
@@ -236,37 +241,27 @@ def admin_dashboard():
 @jwt_required()
 def chatbot():
     try:
-        # Get the current user's identity from the JWT token
         current_user = get_jwt_identity()
         if not current_user or current_user.get('role') != 'user':
             return jsonify({"error": "Unauthorized access. Only users can interact with the chatbot."}), 403
 
-        # Validate the request body
         data = request.get_json()
         if not data:
             logger.error("No data provided in the request body.")
             return jsonify({"error": "Request body is required and must be in JSON format."}), 400
 
-        # Validate the subject field
-        subject = data.get("subject", "").strip()
-        if not subject or not isinstance(subject, str):
-            logger.error("Invalid or missing subject field.")
-            return jsonify({"error": "Subject must be a string."}), 422
-
-        # Validate the message field
         message = data.get("message", "").strip()
         if not message:
             logger.error("Empty message received.")
             return jsonify({"error": "Message is required and cannot be empty."}), 422
 
-        # Get the chatbot's response
         response = chatbot_response(message)
         logger.info(f"Chatbot response generated for user {current_user['username']}: {response}")
         return jsonify({"response": response}), 200
 
     except Exception as e:
         logger.error(f"Unexpected error in chatbot endpoint: {e}", exc_info=True)
-        return jsonify({"error": "An internal server error occurred while processing your request."}), 500    
+        return jsonify({"error": "An internal server error occurred while processing your request."}), 500
              
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():

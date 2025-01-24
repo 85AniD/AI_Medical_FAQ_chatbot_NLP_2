@@ -12,11 +12,21 @@ async function handleLogin(event) {
 
         if (response.ok) {
             const result = await response.json();
+            
+            // Store the JWT token in localStorage
             localStorage.setItem("jwt_token", result.access_token);
-            window.location.href = '/';
+
+            // Redirect based on user role
+            if (result.role === 'user') {
+                window.location.href = '/index'; // Redirect to user dashboard
+            } else if (result.role === 'admin') {
+                window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
+            } else {
+                alert('Unknown role. Please contact support.');
+            }
         } else {
             const result = await response.json();
-            alert(result.error || 'Login failed');
+            alert(result.error || 'Login failed. Please check your credentials.');
         }
     } catch (error) {
         console.error('Error during login:', error);

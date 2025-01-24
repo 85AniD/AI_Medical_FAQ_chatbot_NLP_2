@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{ nonce }}'; style-src 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{ nonce }}'; style-src 'self' 'nonce-{{ nonce }}';">
     <title>Admin Dashboard</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/admin_styles.css">
-    <script src="/static/js/jquery3.7.1.js"></script>
+    <script src="/static/js/jquery3.7.1.js" nonce="{{ nonce }}"></script>
     <script src="/static/js/admin_dashboard.js" nonce="{{ nonce }}"></script>
 </head>
 <body>
@@ -42,8 +42,8 @@
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
                         <td>
-                            <button class="modify-btn" onclick="modify_user({{ user.id }})">Modify</button>
-                            <button class="delete-btn" onclick="delete_user({{ user.id }})">Delete</button>
+                            <button class="modify-btn" data-user-id="{{ user.id }}">Modify</button>
+                            <button class="delete-btn" data-user-id="{{ user.id }}">Delete</button>
                         </td>
                     </tr>
                     {% endfor %}
