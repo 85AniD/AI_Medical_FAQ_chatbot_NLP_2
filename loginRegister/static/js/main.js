@@ -15,7 +15,7 @@ $(document).ready(function () {
     // Get the JWT token from localStorage
     const token = localStorage.getItem("jwt_token");
     console.log("JWT Token:", token);
-    
+
     // Redirect to login if the token is invalid
     if (!isTokenValid(token)) {
         alert("Your session has expired. Please log in again.");
@@ -23,72 +23,81 @@ $(document).ready(function () {
         return; // Ensure script stops here
     }
 
-    // Send a query to the chatbot
-    async function sendQuery() {
+    // Function to send a query to the chatbot
+    function sendQuery() {
         const question = $("#question").val().trim();
-    
-        // Validate the presence of a valid token and question
+
+        // Validate the presence of a valid token
         if (!token) {
             alert("Session expired. Please log in again.");
             window.location.href = "/login";
             return;
         }
-    
-        if (!question) {
-            alert("Please enter a question.");
+
+        // Validate the question input
+        if (!question || typeof question !== "string") {
+            alert("Please enter a valid question.");
             return;
         }
-    
-        try {
-            console.log("Sending request to /chatbot with payload:", { subject: "chat", message: question });
-    
-            const response = await fetch("/chatbot", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ subject: "chat", message: question }) // Include the subject field
-            });
-    
-            console.log("Received response status:", response.status);
-    
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Response data:", result);
-                appendMessage("Me", question);
-                appendMessage("AIbot", result.response);
-                $("#question").val(""); // Clear input field
-            } else {
-                const errorData = await response.json();
-                console.error("Error data:", errorData);
-                const errorMessage = errorData.error || "An error occurred. Please try again.";
-                appendMessage("AIbot", errorMessage);
-            }
-        } catch (error) {
-            console.error("Error sending query:", error);
-            appendMessage("AIbot", "An error occurred while connecting to the server.");
-        }
-    }
 
-    // Append a message to the chat history
-    function appendMessage(sender, message) {
-        const messageHtml = `<p><strong>${sender}:</strong> ${message}</p>`;
-        $("#response").append(messageHtml);
-        $("#response").scrollTop($("#response")[0].scrollHeight); // Auto-scroll to the bottom
+        console.log("Sending payload:", JSON.stringify({ subject: question })); // Debugging
+
+        // Send the question to the chatbot endpoint
+        $.ajax({
+            type: "POST",
+            url: "/chatbot",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify({ subject: question }),
+            success: function (result) {
+                // Append the user's question and chatbot's response to the chat history
+                $("#response").append(
+                    `<p><strong>Me:</strong> ${question}</p>` +
+                    `<p><strong>AIbot:</strong> ${result.response}</p>`
+                );
+                $("#question").val(""); // Clear the input field
+                $('#response').animate({
+                    scrollTop: $('#response').prop("scrollHeight")
+                }, 500); // Auto-scroll to the bottom
+            },
+            error: function (xhr, status, error) {
+                let errorMessage = "An error occurred. Please check the console for details.";
+
+                try {
+                    // Attempt to parse the response as JSON
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.error) {
+                        errorMessage = response.error; // Use the error message from the server
+                    } else if (response.msg) {
+                        errorMessage = response.msg; // Use the message from the server
+                    }
+                } catch (e) {
+                    // If parsing fails, use the raw response text or a generic message
+                    errorMessage = xhr.responseText || "An unexpected error occurred. Please try again.";
+                }
+
+                // Log the error to the console
+                console.error("Error:", errorMessage);
+
+                // Display a user-friendly alert
+                alert(errorMessage);
+            }
+        });
     }
 
     // Handle form submission
     $("#chat-form").submit(function (e) {
-        e.preventDefault();
-        sendQuery();
+        e.preventDefault(); // Prevent the default form submission
+        sendQuery(); // Send the query to the chatbot
     });
 
-    // Handle Enter key press
+    // Handle Enter key press in the input field
     $("#question").keypress(function (e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            sendQuery();
+        if (e.which === 13) { // 13 is the keycode for the Enter key
+            e.preventDefault(); // Prevent the default form submission
+            sendQuery(); // Send the query to the chatbot
         }
     });
 });

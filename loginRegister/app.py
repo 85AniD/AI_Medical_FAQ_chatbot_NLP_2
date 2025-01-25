@@ -9,7 +9,7 @@ import logging
 import nltk
 import mysql.connector
 from mysql.connector import pooling
-from flask import Flask, request, g, jsonify, render_template, redirect, url_for, flash, session
+from flask import Flask, session, request, g, jsonify, render_template, redirect, url_for, flash
 from flask_session import Session  # Ensure Flask-Session is imported
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from flask_cors import CORS
@@ -31,8 +31,8 @@ logger = logging.getLogger(__name__)
 
 # Flask configuration
 class Config:
-    SECRET_KEY = os.getenv("FLASK_SECRET_KEY")
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+    SECRET_KEY = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(32))  # Fallback to a random key if not set
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", secrets.token_hex(32))  # Fallback to a random key if not set
     SESSION_PERMANENT = False
     SESSION_TYPE = "filesystem"
     PERMANENT_SESSION_LIFETIME = timedelta(hours=1)
@@ -45,8 +45,10 @@ class Config:
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Debugging: Print session cookie name
-print(f"Session Cookie Name: {app.config.get('SESSION_COOKIE_NAME')}")
+# Debugging: Log session configuration
+logger.debug(f"Session Cookie Name: {app.config.get('SESSION_COOKIE_NAME')}")
+logger.debug(f"Session Type: {app.config.get('SESSION_TYPE')}")
+logger.debug(f"Session Permanent: {app.config.get('SESSION_PERMANENT')}")
 
 # Initialize Flask-Session
 Session(app)
@@ -84,15 +86,16 @@ def loggedin(func):
 @app.before_request
 def generate_nonce():
     g.nonce = secrets.token_hex(16)
-    print(f"Generated nonce: {g.nonce}")
+    logger.debug(f"Generated nonce: {g.nonce}")
 
 @app.after_request
 def set_csp(response):
     nonce = g.get('nonce', '')
     csp_policy = (
         f"default-src 'self'; "
-        f"script-src 'self' 'nonce-{nonce}'; "
-        f"style-src 'self' 'nonce-{nonce}';"
+        f"script-src 'self' https://ajax.googleapis.com 'nonce-{nonce}'; "  # Allow jQuery CDN
+        f"style-src 'self' 'nonce-{nonce}'; "
+        f"connect-src 'self';"  # Allow AJAX requests to the same origin
     )
     response.headers['Content-Security-Policy'] = csp_policy
     logger.info(f"Generated CSP Policy: {csp_policy}")
@@ -128,6 +131,10 @@ def register():
             conn.commit()
             flash("Registration successful!", "success")
             return redirect(url_for("login"))
+        except mysql.connector.Error as e:
+            logger.error(f"Database error during registration: {e}")
+            flash("An error occurred during registration. Please try again.", "danger")
+            return render_template("register.html", nonce=g.nonce)
         finally:
             if cursor:
                 cursor.close()
@@ -181,7 +188,6 @@ def login():
                     identity={"username": user["username"], "role": user["role"]},
                     expires_delta=timedelta(hours=1)
                 )
-                # Return the token to the frontend
                 return jsonify({
                     "access_token": access_token,
                     "username": user["username"],
@@ -203,7 +209,7 @@ def login():
 
     else:
         return render_template("login.html", nonce=g.nonce)
-        
+
 @app.route('/index', methods=["GET"])
 @loggedin
 def index():
@@ -241,28 +247,38 @@ def admin_dashboard():
 @jwt_required()
 def chatbot():
     try:
-        current_user = get_jwt_identity()
-        if not current_user or current_user.get('role') != 'user':
-            return jsonify({"error": "Unauthorized access. Only users can interact with the chatbot."}), 403
+        logger.debug(f"Incoming request headers: {request.headers}")
+        logger.debug(f"Incoming request data: {request.get_json()}")
+
+        if not request.is_json:
+            logger.error("Request must be in JSON format.")
+            return jsonify({"error": "Request must be in JSON format."}), 400
 
         data = request.get_json()
-        if not data:
-            logger.error("No data provided in the request body.")
-            return jsonify({"error": "Request body is required and must be in JSON format."}), 400
+        logger.debug(f"Parsed request data: {data}")
 
-        message = data.get("message", "").strip()
-        if not message:
-            logger.error("Empty message received.")
-            return jsonify({"error": "Message is required and cannot be empty."}), 422
+        if "subject" not in data:
+            logger.error("Missing 'subject' field in request.")
+            return jsonify({"error": "The 'subject' field is required."}), 400
 
-        response = chatbot_response(message)
-        logger.info(f"Chatbot response generated for user {current_user['username']}: {response}")
+        subject = data["subject"]
+        logger.debug(f"Received subject: {subject} (Type: {type(subject)})")
+
+        if not isinstance(subject, str) or not subject.strip():
+            logger.error(f"Invalid 'subject' value: {subject}")
+            return jsonify({"error": "The 'subject' field must be a non-empty string."}), 422
+
+        logger.info(f"Received valid subject from user: {subject}")
+
+        response = chatbot_response(subject)
+        logger.info(f"Chatbot response generated: {response}")
+
         return jsonify({"response": response}), 200
 
     except Exception as e:
         logger.error(f"Unexpected error in chatbot endpoint: {e}", exc_info=True)
-        return jsonify({"error": "An internal server error occurred while processing your request."}), 500
-             
+        return jsonify({"error": "An internal server error occurred. Please try again later."}), 500
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     logger.info(f"User logged out: {session.get('email')}")
@@ -278,7 +294,6 @@ def root():
         return redirect(url_for("admin_dashboard"))
     return redirect(url_for("login"))
 
-# Modify user
 @app.route('/admin/modify_user/<int:user_id>', methods=['POST'])
 @loggedin
 def modify_user(user_id):
@@ -319,7 +334,6 @@ def modify_user(user_id):
         logger.error(f"Unexpected error while modifying user {user_id}: {e}")
         return jsonify({"error": "An unexpected error occurred"}), 500
 
-#delete user
 @app.route('/admin/delete_user/<int:user_id>', methods=['DELETE'])
 @loggedin
 def delete_user(user_id):
@@ -343,13 +357,11 @@ def delete_user(user_id):
     except Exception as e:
         logger.error(f"Unexpected error while deleting user {user_id}: {e}")
         return jsonify({"error": "An unexpected error occurred"}), 500
-        
-# Health check endpoint
+
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "ok"}), 200
 
-# Error handlers
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html', nonce=g.nonce), 404

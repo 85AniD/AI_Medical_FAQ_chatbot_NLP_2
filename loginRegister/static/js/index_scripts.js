@@ -1,17 +1,19 @@
-$(document).ready(function () {
-    function sendQuery() {
-        const token = localStorage.getItem("jwt_token");
-        if (!token) {
-            alert("Authentication token is missing. Please log in again.");
-            window.location.href = "/login";
-            return;
-        }
+function sendQuery() {
+    const token = localStorage.getItem("jwt_token");
+    if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        window.location.href = "/login";
+        return;
+    }
 
-        const question = $("#question").val().trim();
-        if (!question) {
-            alert("Please enter a question.");
-            return;
-        }
+    const question = $("#question").val().trim();
+    if (!question) {
+        alert("Please enter a question.");
+        return;
+    }
+
+    // Ensure the payload includes the `message` field
+    const payload = { message: question };
 
         $.ajax({
             type: "POST",
@@ -67,4 +69,4 @@ $(document).ready(function () {
             sendQuery();
         }
     });
-});
+
