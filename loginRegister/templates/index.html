@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Updated CSP to allow jQuery CDN -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://ajax.googleapis.com 'nonce-{{ nonce }}';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-{{ nonce }}'; style-src 'self' 'nonce-{{ nonce }}';">
     <title>AI Medical FAQ ChatBot</title>
     <link rel="icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="/static/css/index_styles.css">
@@ -35,9 +34,9 @@
     <footer>&copy; 2025 AI Medical ChatBot. All Rights Reserved.</footer>
 
     <!-- Include jQuery from CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
 
     <!-- Include the main JavaScript file with nonce -->
-    <script nonce="{{ nonce }}" src="/static/js/main.js"></script>
+    <script nonce="{{ nonce }}" src="/static/js/index_scripts.js"></script>
 </body>
 </html>

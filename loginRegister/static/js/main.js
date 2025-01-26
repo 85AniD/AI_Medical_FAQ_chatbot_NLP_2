@@ -26,22 +26,22 @@ $(document).ready(function () {
     // Function to send a query to the chatbot
     function sendQuery() {
         const question = $("#question").val().trim();
-
+    
         // Validate the presence of a valid token
         if (!token) {
             alert("Session expired. Please log in again.");
             window.location.href = "/login";
             return;
         }
-
+    
         // Validate the question input
         if (!question || typeof question !== "string") {
             alert("Please enter a valid question.");
             return;
         }
-
+    
         console.log("Sending payload:", JSON.stringify({ subject: question })); // Debugging
-
+    
         // Send the question to the chatbot endpoint
         $.ajax({
             type: "POST",
@@ -64,7 +64,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 let errorMessage = "An error occurred. Please check the console for details.";
-
+    
                 try {
                     // Attempt to parse the response as JSON
                     const response = JSON.parse(xhr.responseText);
@@ -77,10 +77,10 @@ $(document).ready(function () {
                     // If parsing fails, use the raw response text or a generic message
                     errorMessage = xhr.responseText || "An unexpected error occurred. Please try again.";
                 }
-
+    
                 // Log the error to the console
                 console.error("Error:", errorMessage);
-
+    
                 // Display a user-friendly alert
                 alert(errorMessage);
             }

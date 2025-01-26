@@ -9,14 +9,16 @@ import logging
 import nltk
 import mysql.connector
 from mysql.connector import pooling
+
 from flask import Flask, session, request, g, jsonify, render_template, redirect, url_for, flash
-from flask_session import Session  # Ensure Flask-Session is imported
+from flask_session import Session
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from flask_cors import CORS
 from flask_talisman import Talisman
 from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
+
 from loginRegister.processor import chatbot_response
 from loginRegister.utils import hash_password
 
@@ -42,13 +44,14 @@ class Config:
     DB_PASSWORD = os.getenv("DB_PASSWORD", "Qaz_123")
     DB_NAME = os.getenv("DB_NAME", "medical_faq_chatbot")
 
+# Initialize Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
 # Debugging: Log session configuration
-logger.debug(f"Session Cookie Name: {app.config.get('SESSION_COOKIE_NAME')}")
-logger.debug(f"Session Type: {app.config.get('SESSION_TYPE')}")
-logger.debug(f"Session Permanent: {app.config.get('SESSION_PERMANENT')}")
+logger.debug(f"Session Cookie Name: {app.config['SESSION_COOKIE_NAME']}")
+logger.debug(f"Session Type: {app.config['SESSION_TYPE']}")
+logger.debug(f"Session Permanent: {app.config['SESSION_PERMANENT']}")
 
 # Initialize Flask-Session
 Session(app)
@@ -71,6 +74,7 @@ db_pool = pooling.MySQLConnectionPool(
 )
 
 def get_db_connection():
+    """Get a connection from the database pool."""
     return db_pool.get_connection()
 
 # Decorator for logged-in user
@@ -85,15 +89,17 @@ def loggedin(func):
 
 @app.before_request
 def generate_nonce():
+    """Generate a nonce for Content Security Policy (CSP)."""
     g.nonce = secrets.token_hex(16)
     logger.debug(f"Generated nonce: {g.nonce}")
 
 @app.after_request
 def set_csp(response):
+    """Set Content Security Policy (CSP) headers."""
     nonce = g.get('nonce', '')
     csp_policy = (
         f"default-src 'self'; "
-        f"script-src 'self' https://ajax.googleapis.com 'nonce-{nonce}'; "  # Allow jQuery CDN
+        f"script-src 'self' 'nonce-{nonce}'; "  # Allow local scripts
         f"style-src 'self' 'nonce-{nonce}'; "
         f"connect-src 'self';"  # Allow AJAX requests to the same origin
     )
@@ -103,6 +109,7 @@ def set_csp(response):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """Handle user registration."""
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
@@ -145,6 +152,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Handle user login."""
     if request.method == 'POST':
         if request.is_json:
             data = request.get_json()
@@ -213,6 +221,7 @@ def login():
 @app.route('/index', methods=["GET"])
 @loggedin
 def index():
+    """Render the user dashboard."""
     if session.get('role') != 'user':
         flash("Access denied! Admins cannot access the user dashboard.", "danger")
         return redirect(url_for("login"))
@@ -222,6 +231,7 @@ def index():
 @app.route('/admin/dashboard', methods=["GET"])
 @loggedin
 def admin_dashboard():
+    """Render the admin dashboard."""
     logger.debug(f"Accessing admin_dashboard. Session: {dict(session)}")
     if session.get('role') != 'admin':
         flash("Access denied! Only admins can access this page.", "danger")
@@ -247,30 +257,25 @@ def admin_dashboard():
 @jwt_required()
 def chatbot():
     try:
-        logger.debug(f"Incoming request headers: {request.headers}")
-        logger.debug(f"Incoming request data: {request.get_json()}")
-
         if not request.is_json:
             logger.error("Request must be in JSON format.")
             return jsonify({"error": "Request must be in JSON format."}), 400
 
         data = request.get_json()
-        logger.debug(f"Parsed request data: {data}")
+        logger.info(f"Received data: {data}")  # Log the incoming data
 
-        if "subject" not in data:
-            logger.error("Missing 'subject' field in request.")
-            return jsonify({"error": "The 'subject' field is required."}), 400
+        if "question" not in data:
+            logger.error("Missing 'question' field in request.")
+            return jsonify({"error": "The 'question' field is required."}), 400
 
-        subject = data["subject"]
-        logger.debug(f"Received subject: {subject} (Type: {type(subject)})")
+        user_query = data["question"]
+        if not isinstance(user_query, str) or not user_query.strip():
+            logger.error(f"Invalid 'question' value: {user_query}")
+            return jsonify({"error": "The 'question' field must be a non-empty string."}), 422
 
-        if not isinstance(subject, str) or not subject.strip():
-            logger.error(f"Invalid 'subject' value: {subject}")
-            return jsonify({"error": "The 'subject' field must be a non-empty string."}), 422
+        logger.info(f"Received valid question from user: {user_query}")
 
-        logger.info(f"Received valid subject from user: {subject}")
-
-        response = chatbot_response(subject)
+        response = f"You asked: {user_query}. This is a placeholder response."
         logger.info(f"Chatbot response generated: {response}")
 
         return jsonify({"response": response}), 200
@@ -281,6 +286,7 @@ def chatbot():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
+    """Handle user logout."""
     logger.info(f"User logged out: {session.get('email')}")
     session.clear()
     flash("Logged out successfully!", "success")
@@ -288,6 +294,7 @@ def logout():
 
 @app.route('/')
 def root():
+    """Redirect to the appropriate dashboard based on user role."""
     if session.get("role") == "user":
         return redirect(url_for("index"))
     elif session.get("role") == "admin":
@@ -297,6 +304,7 @@ def root():
 @app.route('/admin/modify_user/<int:user_id>', methods=['POST'])
 @loggedin
 def modify_user(user_id):
+    """Modify user details (admin only)."""
     if session.get('role') != 'admin':
         logger.warning(f"Unauthorized access attempt by user {session.get('username')}")
         return jsonify({"error": "Unauthorized access"}), 403
@@ -337,6 +345,7 @@ def modify_user(user_id):
 @app.route('/admin/delete_user/<int:user_id>', methods=['DELETE'])
 @loggedin
 def delete_user(user_id):
+    """Delete a user (admin only)."""
     if session.get('role') != 'admin':
         logger.warning(f"Unauthorized access attempt by user {session.get('username')}")
         return jsonify({"error": "Unauthorized access"}), 403
@@ -360,18 +369,22 @@ def delete_user(user_id):
 
 @app.route('/health', methods=['GET'])
 def health_check():
+    """Health check endpoint."""
     return jsonify({"status": "ok"}), 200
 
 @app.errorhandler(404)
 def not_found_error(error):
+    """Handle 404 errors."""
     return render_template('404.html', nonce=g.nonce), 404
 
 @app.errorhandler(500)
 def internal_error(error):
+    """Handle 500 errors."""
     return render_template('500.html', nonce=g.nonce), 500
 
 @app.route('/simulate-500')
 def simulate_500():
+    """Simulate a 500 error for testing."""
     raise Exception("This is a simulated 500 error.")
 
 if __name__ == "__main__":
