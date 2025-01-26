@@ -1,3 +1,4 @@
+#test_security
 from zapv2 import ZAPv2
 
 # Test for SQL injection vulnerabilities

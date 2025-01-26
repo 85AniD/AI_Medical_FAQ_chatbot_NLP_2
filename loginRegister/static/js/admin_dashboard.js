@@ -86,6 +86,12 @@ function delete_user(user_id) {
     });
 }
 
+// Function to handle user logout
+function logout() {
+    localStorage.removeItem("jwt_token"); // Clear the JWT token
+    window.location.href = "/login"; // Redirect to the login page
+}
+
 // Attach event listeners to buttons
 document.addEventListener('DOMContentLoaded', function () {
     // Attach event listeners to modify buttons
@@ -102,5 +108,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const userId = this.getAttribute('data-user-id');
             delete_user(userId);
         });
+    });
+
+    // Attach event listener to logout button
+    document.getElementById('logout-button').addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent default action (if it's a link)
+        logout(); // Call the logout function
     });
 });

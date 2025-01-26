@@ -11,10 +11,10 @@
 <body>
     <header>
         <h1>AI Medical FAQ ChatBot</h1>
-        <form action="{{ url_for('logout') }}" method="get" class="logout-form">
+        <div class="logout-form">
             Hi, {{ username }}!&nbsp;
-            <button type="submit" class="logout-btn">Logout</button>
-        </form>        
+            <button id="logout-button" class="logout-btn">Logout</button>
+        </div>        
     </header>
 
     <div class="container">

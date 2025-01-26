@@ -254,8 +254,9 @@ def admin_dashboard():
     return render_template("admin_dashboard.html", users=users, nonce=g.nonce)
 
 @app.route('/chatbot', methods=['POST'])
-@jwt_required()
+@jwt_required()  # Protect the endpoint with JWT authentication
 def chatbot():
+    logger.info(request.get_json())  # Log the incoming request data
     try:
         if not request.is_json:
             logger.error("Request must be in JSON format.")
@@ -264,18 +265,17 @@ def chatbot():
         data = request.get_json()
         logger.info(f"Received data: {data}")  # Log the incoming data
 
-        if "question" not in data:
-            logger.error("Missing 'question' field in request.")
-            return jsonify({"error": "The 'question' field is required."}), 400
-
-        user_query = data["question"]
-        if not isinstance(user_query, str) or not user_query.strip():
-            logger.error(f"Invalid 'question' value: {user_query}")
+        # Check if 'question' field exists and is a non-empty string
+        user_query = data.get("question", "").strip()
+        if not user_query:
+            logger.error("Invalid or empty 'question' field.")
             return jsonify({"error": "The 'question' field must be a non-empty string."}), 422
 
         logger.info(f"Received valid question from user: {user_query}")
 
-        response = f"You asked: {user_query}. This is a placeholder response."
+        # Generate a response using the chatbot model
+        response = chatbot_response(user_query)
+
         logger.info(f"Chatbot response generated: {response}")
 
         return jsonify({"response": response}), 200
@@ -283,14 +283,23 @@ def chatbot():
     except Exception as e:
         logger.error(f"Unexpected error in chatbot endpoint: {e}", exc_info=True)
         return jsonify({"error": "An internal server error occurred. Please try again later."}), 500
-
-@app.route('/logout', methods=['GET', 'POST'])
+            
+@app.route('/logout', methods=['POST'])  # Restrict to POST for security
 def logout():
     """Handle user logout."""
-    logger.info(f"User logged out: {session.get('email')}")
-    session.clear()
+    user_email = session.get('email')
+    if user_email:
+        logger.info(f"User logged out: {user_email}")
+    else:
+        logger.info("An anonymous user attempted to log out.")
+
+    session.clear()  # Clear the session data
     flash("Logged out successfully!", "success")
-    return redirect(url_for("login"))
+
+    # If using JWT tokens, you might want to clear the token on the client side
+    # This would require additional client-side logic (e.g., in JavaScript)
+
+    return redirect(url_for("login"))  # Redirect to the login page
 
 @app.route('/')
 def root():

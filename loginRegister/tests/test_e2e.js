@@ -1,3 +1,4 @@
+/* end-to-end testing */ 
 describe('Chatbot End-to-End Tests', () => {
     it('Visits the chatbot and interacts with it', () => {
         cy.visit('http://localhost:5000')

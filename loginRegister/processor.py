@@ -54,7 +54,7 @@ def clean_up_sentence(sentence):
     """Tokenizes and lemmatizes a given sentence."""
     try:
         sentence_words = nltk.word_tokenize(sentence)
-        return [word.lower() for word in sentence_words if word.isalnum()]
+        return [lemmatizer.lemmatize(word.lower()) for word in sentence_words if word.isalnum()]
     except Exception as e:
         logging.error(f"Error cleaning sentence: {e}")
         raise

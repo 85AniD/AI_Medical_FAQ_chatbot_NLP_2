@@ -1,3 +1,4 @@
+#test_integration
 import pytest
 from ..app import app
 from ..processor import chatbot_response

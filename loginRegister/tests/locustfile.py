@@ -1,3 +1,4 @@
+#load testing
 from locust import HttpUser, task, between
 
 class ChatbotUser(HttpUser):
