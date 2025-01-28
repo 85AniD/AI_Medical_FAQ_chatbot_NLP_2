@@ -1,8 +1,13 @@
 #test_integration
+import os
+import sys
+# Add the project root directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import pytest
-from ..app import app
-from ..processor import chatbot_response
-from ..utils import execute_query
+from loginRegister.app import app
+from loginRegister.processor import chatbot_response
+from loginRegister.utils import execute_query
 from db.db_config import create_connection
 
 # Test chatbot response generation

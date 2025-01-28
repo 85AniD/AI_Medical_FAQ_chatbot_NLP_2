@@ -19,6 +19,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 # Ensure NLTK data is downloaded
 nltk.download('punkt')
+nltk.download('wordnet')
 
 # File paths for required assets
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -106,7 +107,7 @@ def chatbot_response(msg):
 
         # Predict intent using the model
         ints = predict_class(msg, model)
-        if not ints:  # Handle unknown intents
+        if not ints or len(ints) == 0:  # Handle unknown intents
             return "Sorry, I don't understand that."
 
         return get_response(ints, intents)
@@ -131,3 +132,10 @@ def register(userinfo):
     finally:
         if connection:
             connection.close()
+
+if __name__ == "__main__":
+    # Test the chatbot response
+    test_query = "Hello"
+    response = chatbot_response(test_query)
+    print(f"Test Query: {test_query}")
+    print(f"Chatbot Response: {response}")

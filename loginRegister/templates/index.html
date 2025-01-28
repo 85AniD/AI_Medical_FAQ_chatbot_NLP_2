@@ -17,19 +17,28 @@
         </div>        
     </header>
 
-    <div class="container">
-        <form id="chat-form">
-            <div class="form-group">
-                <input type="text" id="question" class="form-control" placeholder="Type your question here..." autocomplete="off">
-                <button type="submit" id="submit-button" class="btn-primary">Send</button>
-            </div>
-        </form>
+    <main class="container">
+        <section class="chat-section">
+            <form id="chat-form" autocomplete="off">
+                <div class="form-group">
+                    <input 
+                        type="text" 
+                        id="question" 
+                        class="form-control" 
+                        placeholder="Type your question here..." 
+                        required 
+                        aria-label="Type your question"
+                    >
+                    <button type="submit" id="submit-button" class="btn-primary">Send</button>
+                </div>
+            </form>
 
-        <div id="response-container">
-            <h4>Chat History</h4>
-            <div id="response"></div>
-        </div>
-    </div>
+            <div id="response-container">
+                <h4>Chat History</h4>
+                <div id="response" class="chat-history"></div>
+            </div>
+        </section>
+    </main>
 
     <footer>&copy; 2025 AI Medical ChatBot. All Rights Reserved.</footer>
 

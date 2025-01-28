@@ -42,10 +42,6 @@ with open('loginRegister/data/classes.pkl', 'wb') as file:
 training = []
 output_empty = [0] * len(classes)
 
-training = []
-output_empty = [0] * len(classes)
-
-# Create training data
 for doc in documents:
     bag = []
     pattern_words = doc[0]
@@ -69,7 +65,6 @@ train_y = np.array([entry[1] for entry in training])
 
 print(f"train_x shape: {train_x.shape}")
 print(f"train_y shape: {train_y.shape}")
-
 
 # Build the model
 model = Sequential()

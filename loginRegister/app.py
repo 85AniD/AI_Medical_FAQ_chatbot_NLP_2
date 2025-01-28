@@ -254,36 +254,36 @@ def admin_dashboard():
     return render_template("admin_dashboard.html", users=users, nonce=g.nonce)
 
 @app.route('/chatbot', methods=['POST'])
-@jwt_required()  # Protect the endpoint with JWT authentication
 def chatbot():
-    logger.info(request.get_json())  # Log the incoming request data
+    logger.info("Received request at /chatbot endpoint")
     try:
+        # Check if request is JSON
         if not request.is_json:
             logger.error("Request must be in JSON format.")
             return jsonify({"error": "Request must be in JSON format."}), 400
 
+        # Parse the JSON payload
         data = request.get_json()
         logger.info(f"Received data: {data}")  # Log the incoming data
 
-        # Check if 'question' field exists and is a non-empty string
+        # Validate 'question' field
         user_query = data.get("question", "").strip()
         if not user_query:
             logger.error("Invalid or empty 'question' field.")
             return jsonify({"error": "The 'question' field must be a non-empty string."}), 422
 
-        logger.info(f"Received valid question from user: {user_query}")
-
-        # Generate a response using the chatbot model
+        logger.info(f"Processing user query: {user_query}")
+        
+        # Generate chatbot response
         response = chatbot_response(user_query)
-
-        logger.info(f"Chatbot response generated: {response}")
+        logger.info(f"Chatbot response: {response}")
 
         return jsonify({"response": response}), 200
 
     except Exception as e:
-        logger.error(f"Unexpected error in chatbot endpoint: {e}", exc_info=True)
-        return jsonify({"error": "An internal server error occurred. Please try again later."}), 500
-            
+        logger.error(f"Unexpected error: {e}", exc_info=True)
+        return jsonify({"error": "An internal server error occurred."}), 500
+               
 @app.route('/logout', methods=['POST'])  # Restrict to POST for security
 def logout():
     """Handle user logout."""
@@ -295,9 +295,6 @@ def logout():
 
     session.clear()  # Clear the session data
     flash("Logged out successfully!", "success")
-
-    # If using JWT tokens, you might want to clear the token on the client side
-    # This would require additional client-side logic (e.g., in JavaScript)
 
     return redirect(url_for("login"))  # Redirect to the login page
 

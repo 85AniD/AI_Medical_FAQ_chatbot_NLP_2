@@ -1,4 +1,9 @@
 #unit testing
+import os
+import sys
+# Add the project root directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import pytest
 import numpy as np
 from loginRegister.processor import clean_up_sentence, bow, predict_class, get_response, model, intents
